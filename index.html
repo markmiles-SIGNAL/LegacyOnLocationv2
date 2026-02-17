@@ -1,312 +1,325 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Legacy On Location — Memories Matter.</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Legacy On Location — Memories Matter.</title>
 
-<style>
-  :root{
-    --muted: rgba(255,255,255,.92);
-    --muted2: rgba(255,255,255,.80);
-    --line: rgba(255,255,255,.22);
-    --shadow: 0 22px 65px rgba(0,0,0,.35);
-  }
+  <style>
+    :root{
+      --text: rgba(255,255,255,.92);
+      --text2: rgba(255,255,255,.78);
+      --line: rgba(255,255,255,.18);
+      --glass: rgba(0,0,0,.14);
+      --glass2: rgba(0,0,0,.22);
+      --shadow: 0 28px 90px rgba(0,0,0,.55);
+    }
 
-  *{box-sizing:border-box}
-  html,body{height:100%; margin:0}
-  body{
-    font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
-    color:#fff;
-    overflow:hidden; /* no scrolling on home */
-    background:#000;
-  }
+    *{ box-sizing:border-box; }
+    html,body{ height:100%; margin:0; }
+    body{
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+      color:#fff;
+      background:#000;
+      overflow:hidden; /* homepage = no scroll */
+    }
 
-  /* FULLSCREEN HERO FOUNDATION — uses exact PNG brightness */
-  .hero{
-    height:100vh;
-    width:100vw;
-    position:relative;
-    background-image:url("defender-hero.png");
-    background-size:cover;
-    background-position:center;
-    background-repeat:no-repeat;
-  }
+    /* FULLSCREEN HERO */
+    .hero{
+      height:100vh;
+      width:100vw;
+      position:relative;
+      background-image: url("hero-winner.png"); /* <-- rename your winner image to hero-winner.png */
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
 
-  /* NAV */
-  .nav{
-    position:absolute;
-    top:18px;
-    left:18px;
-    right:18px;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    gap:14px;
-    z-index:5;
-  }
-  .navLeft,.navRight{
-    display:flex;
-    gap:14px;
-    align-items:center;
-    flex-wrap:wrap;
-  }
-  .nav a{
-    text-decoration:none;
-    color:var(--muted);
-    font-size:16px;
-    letter-spacing:.08em;
-    text-transform:uppercase;
-    padding:14px 18px;
-    border-radius:18px;
-    border:1px solid rgba(255,255,255,.22);
-    background: rgba(0,0,0,.12);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    box-shadow: 0 10px 28px rgba(0,0,0,.18);
-    transition:.15s ease;
-    text-shadow: 0 10px 26px rgba(0,0,0,.45);
-  }
-  .nav a:hover{
-    background: rgba(255,255,255,.14);
-    border-color: rgba(255,255,255,.34);
-    transform: translateY(-2px);
-  }
+    /* light-only top gradient (for nav readability, not darkening whole photo) */
+    .hero::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background: linear-gradient(
+        to bottom,
+        rgba(0,0,0,.42) 0%,
+        rgba(0,0,0,.18) 22%,
+        rgba(0,0,0,0) 46%
+      );
+      pointer-events:none;
+    }
 
-  /* MODAL */
-  .modal{
-    position:fixed;
-    inset:0;
-    display:none;
-    align-items:center;
-    justify-content:center;
-    z-index:50;
-    padding:18px;
-  }
-  .modal.show{display:flex;}
-  .modalBackdrop{
-    position:absolute;
-    inset:0;
-    background: rgba(0,0,0,.62);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-  }
-  .modalCard{
-    position:relative;
-    z-index:2;
-    width:min(1180px, 96vw);
-    max-height:86vh;
-    overflow:auto;
-    background: rgba(16,18,16,.88);
-    border:1px solid rgba(255,255,255,.18);
-    border-radius:28px;
-    box-shadow: 0 30px 110px rgba(0,0,0,.55);
-    padding:26px;
-  }
-  .modalTop{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    gap:12px;
-    margin-bottom:14px;
-  }
-  .modalTop h2{
-    margin:0;
-    font-family: Georgia, "Times New Roman", serif;
-    font-size:26px;
-    letter-spacing:-.01em;
-  }
-  .close{
-    cursor:pointer;
-    border:1px solid rgba(255,255,255,.18);
-    background: rgba(255,255,255,.10);
-    color:#fff;
-    padding:12px 16px;
-    border-radius:16px;
-    font-size:14px;
-  }
-  .close:hover{background: rgba(255,255,255,.16);}
+    /* NAV */
+    .nav{
+      position:absolute;
+      top:18px;
+      left:18px;
+      right:18px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:14px;
+      z-index:5;
+    }
+    .navLeft,.navRight{
+      display:flex;
+      gap:14px;
+      align-items:center;
+      flex-wrap:wrap;
+    }
+    .nav a{
+      text-decoration:none;
+      color: var(--text);
+      font-size:16px;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+      padding:14px 18px;
+      border-radius:18px;
+      border:1px solid rgba(255,255,255,.22);
+      background: var(--glass);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      box-shadow: 0 10px 30px rgba(0,0,0,.18);
+      transition:.15s ease;
+      text-shadow: 0 12px 26px rgba(0,0,0,.45);
+    }
+    .nav a:hover{
+      background: rgba(255,255,255,.12);
+      border-color: rgba(255,255,255,.30);
+      transform: translateY(-2px);
+    }
 
-  /* ✅ Base modal text */
-  .modal p{
-    margin:0 0 12px;
-    color: var(--muted2);
-    font-size:16px;
-    line-height:1.75;
-    max-width: 92ch;
-  }
+    /* MODAL */
+    .modal{
+      position:fixed;
+      inset:0;
+      display:none;
+      align-items:center;
+      justify-content:center;
+      z-index:50;
+      padding:18px;
+    }
+    .modal.show{ display:flex; }
+    .modalBackdrop{
+      position:absolute;
+      inset:0;
+      background: rgba(0,0,0,.62);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+    .modalCard{
+      position:relative;
+      z-index:2;
+      width:min(1180px, 96vw);
+      max-height:86vh;
+      overflow:auto;
+      background: rgba(16,18,16,.92);
+      border:1px solid rgba(255,255,255,.16);
+      border-radius:28px;
+      box-shadow: var(--shadow);
+      padding:26px;
+    }
+    .modalTop{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+      margin-bottom:14px;
+    }
+    .modalTop h2{
+      margin:0;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size:26px;
+      letter-spacing:-.01em;
+    }
+    .close{
+      cursor:pointer;
+      border:1px solid rgba(255,255,255,.18);
+      background: rgba(255,255,255,.10);
+      color:#fff;
+      padding:12px 16px;
+      border-radius:16px;
+      font-size:14px;
+    }
+    .close:hover{ background: rgba(255,255,255,.16); }
 
-  /* ✅ The Offering font +30% */
-  .offering p{
-    font-size: 21px;     /* ~30% above 16px base */
-    line-height: 1.78;
-  }
-  .offering .small{
-    font-size: 18px;     /* supporting text still larger */
-    color: rgba(255,255,255,.78);
-  }
+    .sectionBox{
+      border-radius: 22px;
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(0,0,0,.18);
+      padding: 20px;
+      margin-top: 14px;
+    }
 
-  .sectionBox{
-    border-radius: 22px;
-    border: 1px solid rgba(255,255,255,.14);
-    background: rgba(0,0,0,.18);
-    padding: 20px;
-    margin-top: 14px;
-  }
+    /* Offering font +30% */
+    .offering p{
+      margin:0 0 12px;
+      color: var(--text2);
+      font-size: 21px;
+      line-height:1.78;
+      max-width: 92ch;
+    }
+    .offering b{ color: var(--text); }
+    .offering .small{
+      font-size: 18px;
+      color: rgba(255,255,255,.78);
+    }
 
-  .cards{
-    display:grid;
-    grid-template-columns: repeat(3, minmax(0,1fr));
-    gap:12px;
-    margin-top:14px;
-  }
-  .card{
-    border-radius:18px;
-    border:1px solid rgba(255,255,255,.14);
-    background: rgba(0,0,0,.18);
-    padding:14px;
-  }
-  .card strong{
-    display:block;
-    font-size:12px;
-    letter-spacing:.08em;
-    text-transform:uppercase;
-    margin-bottom:6px;
-    color: rgba(255,255,255,.92);
-  }
-  .card span{
-    display:block;
-    font-size:15px;
-    line-height:1.55;
-    color: rgba(255,255,255,.78);
-  }
+    .cards{
+      display:grid;
+      grid-template-columns: repeat(3, minmax(0,1fr));
+      gap:12px;
+      margin-top:14px;
+    }
+    .card{
+      border-radius:18px;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(0,0,0,.18);
+      padding:14px;
+    }
+    .card strong{
+      display:block;
+      font-size:12px;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+      margin-bottom:6px;
+      color: rgba(255,255,255,.92);
+    }
+    .card span{
+      display:block;
+      font-size:15px;
+      line-height:1.55;
+      color: rgba(255,255,255,.78);
+    }
 
-  .pills{
-    display:flex;
-    flex-wrap:wrap;
-    gap:10px;
-    margin-top:10px;
-  }
-  .pill{
-    padding:10px 14px;
-    border-radius:999px;
-    border:1px solid rgba(255,255,255,.18);
-    background: rgba(255,255,255,.06);
-    color: rgba(255,255,255,.84);
-    font-size:12px;
-    letter-spacing:.06em;
-    text-transform:uppercase;
-  }
+    .pills{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      margin-top:10px;
+    }
+    .pill{
+      padding:10px 14px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.18);
+      background: rgba(255,255,255,.06);
+      color: rgba(255,255,255,.84);
+      font-size:12px;
+      letter-spacing:.06em;
+      text-transform:uppercase;
+    }
 
-  /* Gallery */
-  .gallery{
-    display:grid;
-    grid-template-columns: repeat(12, 1fr);
-    gap:12px;
-    margin-top:14px;
-  }
-  .shot{
-    grid-column: span 6;
-    border-radius:18px;
-    overflow:hidden;
-    border:1px solid rgba(255,255,255,.14);
-    background: rgba(0,0,0,.18);
-  }
-  .shot.wide{grid-column: span 12;}
-  .shot img{
-    width:100%;
-    height:100%;
-    display:block;
-    object-fit:cover;
-    max-height: 520px;
-  }
-  .cap{
-    padding:12px 12px 12px;
-    font-size:13px;
-    color: rgba(255,255,255,.78);
-    border-top:1px solid rgba(255,255,255,.10);
-    background: rgba(0,0,0,.18);
-    line-height: 1.5;
-  }
-  .cap b{
-    color: rgba(255,255,255,.92);
-  }
+    /* Gallery */
+    .gallery{
+      display:grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap:12px;
+      margin-top:14px;
+    }
+    figure{ margin:0; }
+    .shot{
+      grid-column: span 6;
+      border-radius:18px;
+      overflow:hidden;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(0,0,0,.18);
+    }
+    .shot.wide{ grid-column: span 12; }
+    .shot img{
+      width:100%;
+      height:100%;
+      display:block;
+      object-fit:cover;
+      max-height: 520px;
+    }
+    .cap{
+      padding:12px;
+      font-size:13px;
+      color: rgba(255,255,255,.78);
+      border-top:1px solid rgba(255,255,255,.10);
+      background: rgba(0,0,0,.18);
+      line-height: 1.5;
+    }
+    .cap b{ color: rgba(255,255,255,.92); }
 
-  /* FAQ */
-  details{
-    border-radius: 18px;
-    border:1px solid rgba(255,255,255,.14);
-    background: rgba(0,0,0,.18);
-    padding: 12px 14px;
-    margin: 10px 0;
-  }
-  summary{cursor:pointer; font-weight:600; color: rgba(255,255,255,.92);}
+    /* FAQ */
+    details{
+      border-radius: 18px;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(0,0,0,.18);
+      padding: 12px 14px;
+      margin: 10px 0;
+    }
+    summary{ cursor:pointer; font-weight:600; color: rgba(255,255,255,.92); }
 
-  /* Reserve form */
-  .formGrid{
-    display:grid;
-    grid-template-columns: 1fr 1fr;
-    gap:10px;
-  }
-  label{
-    display:block;
-    font-size:12px;
-    color: rgba(255,255,255,.72);
-    margin:10px 0 6px;
-  }
-  input, textarea, select{
-    width:100%;
-    border-radius:14px;
-    border:1px solid rgba(255,255,255,.16);
-    background: rgba(0,0,0,.22);
-    color:#fff;
-    padding:12px;
-    outline:none;
-    font: inherit;
-  }
-  textarea{min-height:120px; resize:vertical;}
-  .actions{
-    display:flex;
-    gap:10px;
-    flex-wrap:wrap;
-    align-items:center;
-    margin-top:12px;
-  }
-  .btn{
-    display:inline-flex;
-    align-items:center;
-    justify-content:center;
-    padding:12px 16px;
-    border-radius:16px;
-    border:1px solid rgba(255,255,255,.18);
-    background: rgba(255,255,255,.10);
-    color:#fff;
-    text-decoration:none;
-    font-size:14px;
-    cursor:pointer;
-  }
-  .btn.primary{
-    background: rgba(234,226,209,.92);
-    color:#141613;
-    border-color: rgba(255,255,255,.12);
-  }
+    /* Reserve form */
+    .formGrid{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:10px;
+    }
+    label{
+      display:block;
+      font-size:12px;
+      color: rgba(255,255,255,.72);
+      margin:10px 0 6px;
+    }
+    input, textarea, select{
+      width:100%;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.16);
+      background: rgba(0,0,0,.22);
+      color:#fff;
+      padding:12px;
+      outline:none;
+      font: inherit;
+    }
+    textarea{ min-height:120px; resize:vertical; }
+    .actions{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+      margin-top:12px;
+    }
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      padding:12px 16px;
+      border-radius:16px;
+      border:1px solid rgba(255,255,255,.18);
+      background: rgba(255,255,255,.10);
+      color:#fff;
+      text-decoration:none;
+      font-size:14px;
+      cursor:pointer;
+    }
+    .btn.primary{
+      background: rgba(234,226,209,.92);
+      color:#141613;
+      border-color: rgba(255,255,255,.12);
+    }
 
-  @media (max-width: 980px){
-    .cards{grid-template-columns:1fr;}
-    .formGrid{grid-template-columns:1fr;}
-    .shot{grid-column: span 12;}
-    .offering p{font-size:19px;}
-    .offering .small{font-size:16px;}
-  }
-</style>
+    @media (max-width: 980px){
+      body{ overflow:auto; }            /* allow scrolling on small screens if modal content is tall */
+      .cards{ grid-template-columns:1fr; }
+      .formGrid{ grid-template-columns:1fr; }
+      .shot{ grid-column: span 12; }
+      .offering p{ font-size:19px; }
+      .offering .small{ font-size:16px; }
+    }
+  </style>
 </head>
 
 <body>
   <!--
-    ✅ FILES NEEDED (same folder as this HTML):
-      - defender-hero.png
+    REQUIRED FILES IN SAME FOLDER AS index.html:
 
-    ✅ GALLERY FILES:
+    HERO:
+      - hero-winner.png   (rename your winning image to this exact filename)
+
+    GALLERY:
       - JamesBond_Skyfall_Extra.jpeg
       - D110_JamesBaroud Session.jpeg
       - D110_Explore Scotland Shoot.jpeg
@@ -345,7 +358,7 @@
     <div class="offering">
       <div class="sectionBox">
         <p style="margin-bottom:0;">
-          <b>Legacy On Location stages a one-of-a-kind Defender 110 Heritage Edition as a cinematic backdrop for moments that matter.</b>
+          <b>Legacy On Location stages a one-of-a-kind Defender 110 "Heritage Edition" as a cinematic backdrop for moments that matter.</b>
         </p>
         <p class="small" style="margin-top:12px;">
           Designed for weddings, family gatherings, photo shoots, content creators, and film/television productions.
@@ -387,28 +400,25 @@
   </template>
 
   <template id="tpl-gallery">
-    <p style="margin-bottom:6px;">Selected moments on location.</p>
+    <p style="margin-bottom:6px; color: rgba(255,255,255,.80);">Selected moments on location.</p>
 
     <div class="gallery">
-      <!-- Photo 1 -->
       <figure class="shot wide">
         <img src="JamesBond_Skyfall_Extra.jpeg" alt="On set as extra prop in James Bond Skyfall" />
         <figcaption class="cap">
-          <b>On set as extra prop in James Bond Skyfall.</b><br>
-          Location: The Scottish Highlands (2018).
+          <b>On set as extra prop in James Bond "No Time To Die".</b><br>
+          Location: The Cairngorns, Scottish Highlands (2020).
         </figcaption>
       </figure>
 
-      <!-- Photo 2 -->
       <figure class="shot">
-        <img src="D110_JamesBaroud Session.jpeg" alt="On location brand photo shoot for James Baroud rooftop tents" />
+        <img src="D110_JamesBaroud Session.jpeg" alt="Brand photo shoot for James Baroud rooftop tents" />
         <figcaption class="cap">
           <b>On location brand photo shoot for James Baroud rooftop tents.</b><br>
           Location: Bearsden, Scotland.
         </figcaption>
       </figure>
 
-      <!-- Photo 3 -->
       <figure class="shot">
         <img src="D110_Explore Scotland Shoot.jpeg" alt="Corporate Retreat at Balloch Castle" />
         <figcaption class="cap">
@@ -417,16 +427,14 @@
         </figcaption>
       </figure>
 
-      <!-- Photo 4 -->
       <figure class="shot">
         <img src="D110_Family Kilts_LochLomond.jpeg" alt="Family Christmas Kilts" />
         <figcaption class="cap">
-          <b>Family Christmas Kilts.</b><br>
+          <b>Family Christmas photo shoot.</b><br>
           Location: Inverness, Scotland.
         </figcaption>
       </figure>
 
-      <!-- Photo 5 -->
       <figure class="shot">
         <img src="Corprate Tree Cutting Day_Highlands.jpeg" alt="Bearsden Council Christmas Tree Farm" />
         <figcaption class="cap">
@@ -435,7 +443,6 @@
         </figcaption>
       </figure>
 
-      <!-- Photo 6 -->
       <figure class="shot wide">
         <img src="Estate Sale_Bearsden_Glasgow.jpeg" alt="Large Estate Sale" />
         <figcaption class="cap">
@@ -447,37 +454,47 @@
   </template>
 
   <template id="tpl-about">
-    <p>Top questions — answered briefly.</p>
+    <p style="color: rgba(255,255,255,.80);">Top questions — answered briefly.</p>
 
     <details open>
       <summary>Do clients drive the Defender?</summary>
-      <p>Typically no. We prioritize staged sessions to protect rarity and control liability. Chauffeur-managed movement can be arranged.</p>
+      <p style="color: rgba(255,255,255,.78);">
+        Typically no. We prioritize staged sessions to protect rarity and control liability. Chauffeur-managed movement can be arranged.
+      </p>
     </details>
 
     <details>
       <summary>Where do you serve?</summary>
-      <p>SF, Marin, Napa, Sonoma, East Bay, and the Peninsula. Delivery is quoted based on distance, access, and timing.</p>
+      <p style="color: rgba(255,255,255,.78);">
+        SF, Marin, Napa, Sonoma, East Bay, and the Peninsula. Delivery is quoted based on distance, access, and timing.
+      </p>
     </details>
 
     <details>
       <summary>What do film/commercial productions require?</summary>
-      <p>A certificate of insurance (COI), shoot details (call sheet if applicable), and clear usage/placement requirements.</p>
+      <p style="color: rgba(255,255,255,.78);">
+        A certificate of insurance (COI), shoot details (call sheet if applicable), and clear usage/placement requirements.
+      </p>
     </details>
 
     <details>
       <summary>Are rates posted?</summary>
-      <p>No. Rates are tailored by duration, location, and usage (personal vs. commercial). Submit a request and we’ll reply with availability + quote.</p>
+      <p style="color: rgba(255,255,255,.78);">
+        No. Rates are tailored by duration, location, and usage (personal vs. commercial). Submit a request and we’ll reply with availability + quote.
+      </p>
     </details>
 
     <details>
       <summary>How far in advance should we reserve?</summary>
-      <p>Weekends and golden hour commonly book 2–4 weeks out. Productions should reserve earlier whenever possible.</p>
+      <p style="color: rgba(255,255,255,.78);">
+        Weekends and golden hour commonly book 2–4 weeks out. Productions should reserve earlier whenever possible.
+      </p>
     </details>
   </template>
 
   <template id="tpl-reserve">
-    <p>
-      Complete the request form below. This sends an email (no backend required).
+    <p style="color: rgba(255,255,255,.80);">
+      Complete the request form below. This opens your email app (no backend required).
       We’ll respond with availability and a tailored quote.
     </p>
 
@@ -521,7 +538,7 @@
 
       <div class="actions">
         <button class="btn primary" type="submit">Send Request</button>
-        <a class="btn" href="mailto:hello@legacyonlocation.com">Email Instead</a>
+        <a class="btn" href="mailto:legacyonlocation@gmail.com">Email Instead</a>
       </div>
 
       <p style="margin-top:10px; color:rgba(255,255,255,.70); font-size:12px; line-height:1.5">
@@ -530,50 +547,50 @@
     </form>
   </template>
 
-<script>
-  const modal = document.getElementById("modal");
-  const titleEl = document.getElementById("modalTitle");
-  const bodyEl  = document.getElementById("modalBody");
+  <script>
+    const modal = document.getElementById("modal");
+    const titleEl = document.getElementById("modalTitle");
+    const bodyEl  = document.getElementById("modalBody");
 
-  const map = {
-    offering: { title: "The Offering", tpl: "tpl-offering" },
-    gallery:  { title: "Gallery",      tpl: "tpl-gallery"  },
-    reserve:  { title: "Reserve",      tpl: "tpl-reserve"  },
-    about:    { title: "About",        tpl: "tpl-about"    },
-  };
+    const map = {
+      offering: { title: "The Offering", tpl: "tpl-offering" },
+      gallery:  { title: "Gallery",      tpl: "tpl-gallery"  },
+      reserve:  { title: "Reserve",      tpl: "tpl-reserve"  },
+      about:    { title: "About",        tpl: "tpl-about"    },
+    };
 
-  function openModal(key){
-    const item = map[key];
-    if(!item) return;
-    titleEl.textContent = item.title;
-    const tpl = document.getElementById(item.tpl);
-    bodyEl.innerHTML = "";
-    bodyEl.appendChild(tpl.content.cloneNode(true));
-    modal.classList.add("show");
-  }
+    function openModal(key){
+      const item = map[key];
+      if(!item) return;
+      titleEl.textContent = item.title;
+      const tpl = document.getElementById(item.tpl);
+      bodyEl.innerHTML = "";
+      bodyEl.appendChild(tpl.content.cloneNode(true));
+      modal.classList.add("show");
+    }
 
-  function closeModal(){
-    modal.classList.remove("show");
-    bodyEl.innerHTML = "";
-  }
+    function closeModal(){
+      modal.classList.remove("show");
+      bodyEl.innerHTML = "";
+    }
 
-  window.addEventListener("keydown", (e) => {
-    if(e.key === "Escape") closeModal();
-  });
+    window.addEventListener("keydown", (e) => {
+      if(e.key === "Escape") closeModal();
+    });
 
-  function sendMail(e){
-    e.preventDefault();
+    function sendMail(e){
+      e.preventDefault();
 
-    const name = document.getElementById("name").value.trim();
-    const email = document.getElementById("email").value.trim();
-    const phone = document.getElementById("phone").value.trim();
-    const type = document.getElementById("type").value;
-    const date = document.getElementById("date").value.trim();
-    const location = document.getElementById("location").value.trim();
-    const details = document.getElementById("details").value.trim();
+      const name = document.getElementById("name").value.trim();
+      const email = document.getElementById("email").value.trim();
+      const phone = document.getElementById("phone").value.trim();
+      const type = document.getElementById("type").value;
+      const date = document.getElementById("date").value.trim();
+      const location = document.getElementById("location").value.trim();
+      const details = document.getElementById("details").value.trim();
 
-    const subject = encodeURIComponent(`Legacy On Location — Reserve Request (${type})`);
-    const body = encodeURIComponent(
+      const subject = encodeURIComponent(`Legacy On Location — Reserve Request (${type})`);
+      const body = encodeURIComponent(
 `Name: ${name}
 Email: ${email}
 Phone: ${phone}
@@ -585,15 +602,15 @@ Description / Requirements:
 ${details}
 
 — Sent from Legacy On Location website`
-    );
+      );
 
-    window.location.href = `mailto:hello@legacyonlocation.com?subject=${subject}&body=${body}`;
-    return false;
-  }
+      window.location.href = `mailto:legacyonlocation@gmail.com?subject=${subject}&body=${body}`;
+      return false;
+    }
 
-  window.openModal = openModal;
-  window.closeModal = closeModal;
-  window.sendMail = sendMail;
-</script>
+    window.openModal = openModal;
+    window.closeModal = closeModal;
+    window.sendMail = sendMail;
+  </script>
 </body>
 </html>
