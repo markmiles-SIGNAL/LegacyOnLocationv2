@@ -1,616 +1,245 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Legacy On Location — Memories Matter.</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Legacy On Location — Memories Matter.</title>
 
-  <style>
-    :root{
-      --text: rgba(255,255,255,.92);
-      --text2: rgba(255,255,255,.78);
-      --line: rgba(255,255,255,.18);
-      --glass: rgba(0,0,0,.14);
-      --glass2: rgba(0,0,0,.22);
-      --shadow: 0 28px 90px rgba(0,0,0,.55);
-    }
+<style>
+* { box-sizing: border-box; }
 
-    *{ box-sizing:border-box; }
-    html,body{ height:100%; margin:0; }
-    body{
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
-      color:#fff;
-      background:#000;
-      overflow:hidden; /* homepage = no scroll */
-    }
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+  background: #000;
+  color: #fff;
+}
 
-    /* FULLSCREEN HERO */
-    .hero{
-      height:100vh;
-      width:100vw;
-      position:relative;
-      background-image: url("hero-winner.png"); /* <-- rename your winner image to hero-winner.png */
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
-    }
+/* FULL SCREEN HERO */
+.hero {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: url("./hero-winner.png") center center / cover no-repeat;
+  z-index: 0;
+}
 
-    /* light-only top gradient (for nav readability, not darkening whole photo) */
-    .hero::before{
-      content:"";
-      position:absolute;
-      inset:0;
-      background: linear-gradient(
-        to bottom,
-        rgba(0,0,0,.42) 0%,
-        rgba(0,0,0,.18) 22%,
-        rgba(0,0,0,0) 46%
-      );
-      pointer-events:none;
-    }
+/* Top gradient only for nav readability */
+.hero::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 200px;
+  background: linear-gradient(
+    to bottom,
+    rgba(0,0,0,.45),
+    rgba(0,0,0,.15),
+    rgba(0,0,0,0)
+  );
+}
 
-    /* NAV */
-    .nav{
-      position:absolute;
-      top:18px;
-      left:18px;
-      right:18px;
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap:14px;
-      z-index:5;
-    }
-    .navLeft,.navRight{
-      display:flex;
-      gap:14px;
-      align-items:center;
-      flex-wrap:wrap;
-    }
-    .nav a{
-      text-decoration:none;
-      color: var(--text);
-      font-size:16px;
-      letter-spacing:.08em;
-      text-transform:uppercase;
-      padding:14px 18px;
-      border-radius:18px;
-      border:1px solid rgba(255,255,255,.22);
-      background: var(--glass);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      box-shadow: 0 10px 30px rgba(0,0,0,.18);
-      transition:.15s ease;
-      text-shadow: 0 12px 26px rgba(0,0,0,.45);
-    }
-    .nav a:hover{
-      background: rgba(255,255,255,.12);
-      border-color: rgba(255,255,255,.30);
-      transform: translateY(-2px);
-    }
+/* NAV */
+.nav {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  right: 20px;
+  display: flex;
+  justify-content: space-between;
+  z-index: 5;
+}
 
-    /* MODAL */
-    .modal{
-      position:fixed;
-      inset:0;
-      display:none;
-      align-items:center;
-      justify-content:center;
-      z-index:50;
-      padding:18px;
-    }
-    .modal.show{ display:flex; }
-    .modalBackdrop{
-      position:absolute;
-      inset:0;
-      background: rgba(0,0,0,.62);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-    }
-    .modalCard{
-      position:relative;
-      z-index:2;
-      width:min(1180px, 96vw);
-      max-height:86vh;
-      overflow:auto;
-      background: rgba(16,18,16,.92);
-      border:1px solid rgba(255,255,255,.16);
-      border-radius:28px;
-      box-shadow: var(--shadow);
-      padding:26px;
-    }
-    .modalTop{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap:12px;
-      margin-bottom:14px;
-    }
-    .modalTop h2{
-      margin:0;
-      font-family: Georgia, "Times New Roman", serif;
-      font-size:26px;
-      letter-spacing:-.01em;
-    }
-    .close{
-      cursor:pointer;
-      border:1px solid rgba(255,255,255,.18);
-      background: rgba(255,255,255,.10);
-      color:#fff;
-      padding:12px 16px;
-      border-radius:16px;
-      font-size:14px;
-    }
-    .close:hover{ background: rgba(255,255,255,.16); }
+.navLeft,
+.navRight {
+  display: flex;
+  gap: 14px;
+}
 
-    .sectionBox{
-      border-radius: 22px;
-      border: 1px solid rgba(255,255,255,.14);
-      background: rgba(0,0,0,.18);
-      padding: 20px;
-      margin-top: 14px;
-    }
+.nav a {
+  text-decoration: none;
+  color: #fff;
+  font-size: 16px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  padding: 14px 18px;
+  border-radius: 18px;
+  border: 1px solid rgba(255,255,255,.25);
+  background: rgba(0,0,0,.2);
+  backdrop-filter: blur(6px);
+  transition: 0.2s ease;
+}
 
-    /* Offering font +30% */
-    .offering p{
-      margin:0 0 12px;
-      color: var(--text2);
-      font-size: 21px;
-      line-height:1.78;
-      max-width: 92ch;
-    }
-    .offering b{ color: var(--text); }
-    .offering .small{
-      font-size: 18px;
-      color: rgba(255,255,255,.78);
-    }
+.nav a:hover {
+  background: rgba(255,255,255,.15);
+  transform: translateY(-2px);
+}
 
-    .cards{
-      display:grid;
-      grid-template-columns: repeat(3, minmax(0,1fr));
-      gap:12px;
-      margin-top:14px;
-    }
-    .card{
-      border-radius:18px;
-      border:1px solid rgba(255,255,255,.14);
-      background: rgba(0,0,0,.18);
-      padding:14px;
-    }
-    .card strong{
-      display:block;
-      font-size:12px;
-      letter-spacing:.08em;
-      text-transform:uppercase;
-      margin-bottom:6px;
-      color: rgba(255,255,255,.92);
-    }
-    .card span{
-      display:block;
-      font-size:15px;
-      line-height:1.55;
-      color: rgba(255,255,255,.78);
-    }
+/* MODAL */
+.modal {
+  position: fixed;
+  inset: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+  padding: 20px;
+}
 
-    .pills{
-      display:flex;
-      flex-wrap:wrap;
-      gap:10px;
-      margin-top:10px;
-    }
-    .pill{
-      padding:10px 14px;
-      border-radius:999px;
-      border:1px solid rgba(255,255,255,.18);
-      background: rgba(255,255,255,.06);
-      color: rgba(255,255,255,.84);
-      font-size:12px;
-      letter-spacing:.06em;
-      text-transform:uppercase;
-    }
+.modal.show {
+  display: flex;
+}
 
-    /* Gallery */
-    .gallery{
-      display:grid;
-      grid-template-columns: repeat(12, 1fr);
-      gap:12px;
-      margin-top:14px;
-    }
-    figure{ margin:0; }
-    .shot{
-      grid-column: span 6;
-      border-radius:18px;
-      overflow:hidden;
-      border:1px solid rgba(255,255,255,.14);
-      background: rgba(0,0,0,.18);
-    }
-    .shot.wide{ grid-column: span 12; }
-    .shot img{
-      width:100%;
-      height:100%;
-      display:block;
-      object-fit:cover;
-      max-height: 520px;
-    }
-    .cap{
-      padding:12px;
-      font-size:13px;
-      color: rgba(255,255,255,.78);
-      border-top:1px solid rgba(255,255,255,.10);
-      background: rgba(0,0,0,.18);
-      line-height: 1.5;
-    }
-    .cap b{ color: rgba(255,255,255,.92); }
+.modalBackdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,.65);
+  backdrop-filter: blur(10px);
+}
 
-    /* FAQ */
-    details{
-      border-radius: 18px;
-      border:1px solid rgba(255,255,255,.14);
-      background: rgba(0,0,0,.18);
-      padding: 12px 14px;
-      margin: 10px 0;
-    }
-    summary{ cursor:pointer; font-weight:600; color: rgba(255,255,255,.92); }
+.modalCard {
+  position: relative;
+  z-index: 2;
+  width: min(1000px, 95vw);
+  max-height: 85vh;
+  overflow: auto;
+  background: rgba(20,22,20,.96);
+  border-radius: 26px;
+  padding: 30px;
+}
 
-    /* Reserve form */
-    .formGrid{
-      display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap:10px;
-    }
-    label{
-      display:block;
-      font-size:12px;
-      color: rgba(255,255,255,.72);
-      margin:10px 0 6px;
-    }
-    input, textarea, select{
-      width:100%;
-      border-radius:14px;
-      border:1px solid rgba(255,255,255,.16);
-      background: rgba(0,0,0,.22);
-      color:#fff;
-      padding:12px;
-      outline:none;
-      font: inherit;
-    }
-    textarea{ min-height:120px; resize:vertical; }
-    .actions{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      align-items:center;
-      margin-top:12px;
-    }
-    .btn{
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      padding:12px 16px;
-      border-radius:16px;
-      border:1px solid rgba(255,255,255,.18);
-      background: rgba(255,255,255,.10);
-      color:#fff;
-      text-decoration:none;
-      font-size:14px;
-      cursor:pointer;
-    }
-    .btn.primary{
-      background: rgba(234,226,209,.92);
-      color:#141613;
-      border-color: rgba(255,255,255,.12);
-    }
+.modalCard h2 {
+  margin-top: 0;
+  font-family: Georgia, serif;
+}
 
-    @media (max-width: 980px){
-      body{ overflow:auto; }            /* allow scrolling on small screens if modal content is tall */
-      .cards{ grid-template-columns:1fr; }
-      .formGrid{ grid-template-columns:1fr; }
-      .shot{ grid-column: span 12; }
-      .offering p{ font-size:19px; }
-      .offering .small{ font-size:16px; }
-    }
-  </style>
+.close {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  border: none;
+  background: rgba(255,255,255,.15);
+  color: #fff;
+  padding: 10px 14px;
+  border-radius: 14px;
+  cursor: pointer;
+}
+
+.sectionBox {
+  border-radius: 20px;
+  border: 1px solid rgba(255,255,255,.15);
+  padding: 18px;
+  margin-top: 16px;
+  background: rgba(0,0,0,.25);
+}
+
+/* Offering font enlarged */
+.offering p {
+  font-size: 22px;
+  line-height: 1.8;
+}
+
+/* Areas Served */
+.pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.pill {
+  padding: 10px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,.2);
+  font-size: 12px;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+
+@media(max-width: 900px){
+  .modalCard { width: 95vw; }
+}
+</style>
 </head>
 
 <body>
-  <!--
-    REQUIRED FILES IN SAME FOLDER AS index.html:
 
-    HERO:
-      - hero-winner.png   (rename your winning image to this exact filename)
+<div class="hero"></div>
 
-    GALLERY:
-      - JamesBond_Skyfall_Extra.jpeg
-      - D110_JamesBaroud Session.jpeg
-      - D110_Explore Scotland Shoot.jpeg
-      - D110_Family Kilts_LochLomond.jpeg
-      - Corprate Tree Cutting Day_Highlands.jpeg
-      - Estate Sale_Bearsden_Glasgow.jpeg
-  -->
-
-  <section class="hero" aria-label="Homepage hero">
-    <div class="nav" aria-label="Primary navigation">
-      <div class="navLeft">
-        <a href="#" onclick="openModal('offering'); return false;">The Offering</a>
-        <a href="#" onclick="openModal('gallery'); return false;">Gallery</a>
-      </div>
-      <div class="navRight">
-        <a href="#" onclick="openModal('reserve'); return false;">Reserve</a>
-        <a href="#" onclick="openModal('about'); return false;">About</a>
-      </div>
-    </div>
-  </section>
-
-  <!-- MODAL -->
-  <div class="modal" id="modal">
-    <div class="modalBackdrop" onclick="closeModal()"></div>
-    <div class="modalCard" role="dialog" aria-modal="true" aria-label="Modal content">
-      <div class="modalTop">
-        <h2 id="modalTitle">Title</h2>
-        <button class="close" onclick="closeModal()">Close</button>
-      </div>
-      <div id="modalBody"></div>
-    </div>
+<div class="nav">
+  <div class="navLeft">
+    <a href="#" onclick="openModal('offering');return false;">The Offering</a>
+    <a href="#" onclick="openModal('gallery');return false;">Gallery</a>
   </div>
+  <div class="navRight">
+    <a href="#" onclick="openModal('reserve');return false;">Reserve</a>
+    <a href="#" onclick="openModal('about');return false;">About</a>
+  </div>
+</div>
 
-  <!-- TEMPLATES -->
-  <template id="tpl-offering">
-    <div class="offering">
-      <div class="sectionBox">
-        <p style="margin-bottom:0;">
-          <b>Legacy On Location stages a one-of-a-kind Defender 110 "Heritage Edition" as a cinematic backdrop for moments that matter.</b>
-        </p>
-        <p class="small" style="margin-top:12px;">
-          Designed for weddings, family gatherings, photo shoots, content creators, and film/television productions.
-          This is curated staging — not casual rental.
-        </p>
+<div class="modal" id="modal">
+  <div class="modalBackdrop" onclick="closeModal()"></div>
+  <div class="modalCard">
+    <button class="close" onclick="closeModal()">Close</button>
+    <h2 id="modalTitle"></h2>
+    <div id="modalBody"></div>
+  </div>
+</div>
 
-        <div class="cards" aria-label="Service pillars">
-          <div class="card">
-            <strong>Static Staging</strong>
-            <span>We deliver and position the Defender as a premium visual anchor for your shoot or event.</span>
-          </div>
-          <div class="card">
-            <strong>Chauffeur Option</strong>
-            <span>We handle any movement/placement when needed for timing, safety, and liability control.</span>
-          </div>
-          <div class="card">
-            <strong>Production Ready</strong>
-            <span>COI required. Clear usage terms. Coordination with producers and creative teams.</span>
-          </div>
-        </div>
+<script>
+const modal = document.getElementById("modal");
+const titleEl = document.getElementById("modalTitle");
+const bodyEl = document.getElementById("modalBody");
 
-        <p class="small" style="margin-top:14px;">
-          Rates are tailored by duration, location, and usage (personal vs. commercial). Reserve to receive availability + quote.
-        </p>
-      </div>
+const sections = {
+offering: {
+title: "The Offering",
+content: `
+<div class="offering">
+<div class="sectionBox">
+<p><b>Legacy On Location stages a one-of-a-kind Defender 110 Heritage Edition as a cinematic backdrop for moments that matter.</b></p>
+</div>
+<div class="sectionBox">
+<b>Areas Served</b>
+<div class="pills">
+<span class="pill">SF</span>
+<span class="pill">Marin</span>
+<span class="pill">Napa</span>
+<span class="pill">Sonoma</span>
+<span class="pill">East Bay</span>
+<span class="pill">Peninsula</span>
+</div>
+</div>
+</div>`
+},
+gallery: {
+title: "Gallery",
+content: `<p>Gallery content placeholder.</p>`
+},
+reserve: {
+title: "Reserve",
+content: `<p>Email <b>legacyonlocation@gmail.com</b> with date, location, and details for availability and quote.</p>`
+},
+about: {
+title: "About",
+content: `<p>Premium curated staging. Not casual rental. COI required for production use.</p>`
+}
+};
 
-      <div class="sectionBox" aria-label="Areas Served">
-        <p style="margin:0 0 10px;"><b>Areas Served</b></p>
-        <div class="pills">
-          <span class="pill">SF</span>
-          <span class="pill">Marin</span>
-          <span class="pill">Napa</span>
-          <span class="pill">Sonoma</span>
-          <span class="pill">East Bay</span>
-          <span class="pill">Peninsula</span>
-        </div>
-      </div>
-    </div>
-  </template>
+function openModal(key){
+titleEl.textContent = sections[key].title;
+bodyEl.innerHTML = sections[key].content;
+modal.classList.add("show");
+}
 
-  <template id="tpl-gallery">
-    <p style="margin-bottom:6px; color: rgba(255,255,255,.80);">Selected moments on location.</p>
+function closeModal(){
+modal.classList.remove("show");
+}
+</script>
 
-    <div class="gallery">
-      <figure class="shot wide">
-        <img src="JamesBond_Skyfall_Extra.jpeg" alt="On set as extra prop in James Bond Skyfall" />
-        <figcaption class="cap">
-          <b>On set as extra prop in James Bond "No Time To Die".</b><br>
-          Location: The Cairngorns, Scottish Highlands (2020).
-        </figcaption>
-      </figure>
-
-      <figure class="shot">
-        <img src="D110_JamesBaroud Session.jpeg" alt="Brand photo shoot for James Baroud rooftop tents" />
-        <figcaption class="cap">
-          <b>On location brand photo shoot for James Baroud rooftop tents.</b><br>
-          Location: Bearsden, Scotland.
-        </figcaption>
-      </figure>
-
-      <figure class="shot">
-        <img src="D110_Explore Scotland Shoot.jpeg" alt="Corporate Retreat at Balloch Castle" />
-        <figcaption class="cap">
-          <b>Corporate Retreat at Balloch Castle.</b><br>
-          Location: Loch Lomond, Scotland.
-        </figcaption>
-      </figure>
-
-      <figure class="shot">
-        <img src="D110_Family Kilts_LochLomond.jpeg" alt="Family Christmas Kilts" />
-        <figcaption class="cap">
-          <b>Family Christmas photo shoot.</b><br>
-          Location: Inverness, Scotland.
-        </figcaption>
-      </figure>
-
-      <figure class="shot">
-        <img src="Corprate Tree Cutting Day_Highlands.jpeg" alt="Bearsden Council Christmas Tree Farm" />
-        <figcaption class="cap">
-          <b>Bearsden Council Christmas Tree Farm.</b><br>
-          Location: Glasgow, Scotland.
-        </figcaption>
-      </figure>
-
-      <figure class="shot wide">
-        <img src="Estate Sale_Bearsden_Glasgow.jpeg" alt="Large Estate Sale" />
-        <figcaption class="cap">
-          <b>Large Estate Sale.</b><br>
-          Location: Balloch, Scotland.
-        </figcaption>
-      </figure>
-    </div>
-  </template>
-
-  <template id="tpl-about">
-    <p style="color: rgba(255,255,255,.80);">Top questions — answered briefly.</p>
-
-    <details open>
-      <summary>Do clients drive the Defender?</summary>
-      <p style="color: rgba(255,255,255,.78);">
-        Typically no. We prioritize staged sessions to protect rarity and control liability. Chauffeur-managed movement can be arranged.
-      </p>
-    </details>
-
-    <details>
-      <summary>Where do you serve?</summary>
-      <p style="color: rgba(255,255,255,.78);">
-        SF, Marin, Napa, Sonoma, East Bay, and the Peninsula. Delivery is quoted based on distance, access, and timing.
-      </p>
-    </details>
-
-    <details>
-      <summary>What do film/commercial productions require?</summary>
-      <p style="color: rgba(255,255,255,.78);">
-        A certificate of insurance (COI), shoot details (call sheet if applicable), and clear usage/placement requirements.
-      </p>
-    </details>
-
-    <details>
-      <summary>Are rates posted?</summary>
-      <p style="color: rgba(255,255,255,.78);">
-        No. Rates are tailored by duration, location, and usage (personal vs. commercial). Submit a request and we’ll reply with availability + quote.
-      </p>
-    </details>
-
-    <details>
-      <summary>How far in advance should we reserve?</summary>
-      <p style="color: rgba(255,255,255,.78);">
-        Weekends and golden hour commonly book 2–4 weeks out. Productions should reserve earlier whenever possible.
-      </p>
-    </details>
-  </template>
-
-  <template id="tpl-reserve">
-    <p style="color: rgba(255,255,255,.80);">
-      Complete the request form below. This opens your email app (no backend required).
-      We’ll respond with availability and a tailored quote.
-    </p>
-
-    <form onsubmit="return sendMail(event)">
-      <div class="formGrid">
-        <div>
-          <label for="name">Name</label>
-          <input id="name" required placeholder="Your name" />
-        </div>
-        <div>
-          <label for="email">Email</label>
-          <input id="email" type="email" required placeholder="you@email.com" />
-        </div>
-        <div>
-          <label for="phone">Phone (optional)</label>
-          <input id="phone" placeholder="(415) 555-0123" />
-        </div>
-        <div>
-          <label for="type">Request type</label>
-          <select id="type">
-            <option>Wedding / Engagement</option>
-            <option>Family / Milestone</option>
-            <option>Brand / Creator</option>
-            <option>Production (Film/TV/Commercial)</option>
-          </select>
-        </div>
-        <div>
-          <label for="date">Preferred date(s)</label>
-          <input id="date" placeholder="e.g., March 10 or March 10–12" />
-        </div>
-        <div>
-          <label for="location">Location</label>
-          <input id="location" placeholder="e.g., SF / Marin / Napa / Sonoma / East Bay / Peninsula" />
-        </div>
-      </div>
-
-      <div>
-        <label for="details">Description / requirements</label>
-        <textarea id="details" placeholder="Time window, staging needs, people/crew size, COI (if production), intended usage, anything important."></textarea>
-      </div>
-
-      <div class="actions">
-        <button class="btn primary" type="submit">Send Request</button>
-        <a class="btn" href="mailto:legacyonlocation@gmail.com">Email Instead</a>
-      </div>
-
-      <p style="margin-top:10px; color:rgba(255,255,255,.70); font-size:12px; line-height:1.5">
-        Productions require COI. Sessions prioritize staging-first boundaries to protect rarity and ensure a premium experience.
-      </p>
-    </form>
-  </template>
-
-  <script>
-    const modal = document.getElementById("modal");
-    const titleEl = document.getElementById("modalTitle");
-    const bodyEl  = document.getElementById("modalBody");
-
-    const map = {
-      offering: { title: "The Offering", tpl: "tpl-offering" },
-      gallery:  { title: "Gallery",      tpl: "tpl-gallery"  },
-      reserve:  { title: "Reserve",      tpl: "tpl-reserve"  },
-      about:    { title: "About",        tpl: "tpl-about"    },
-    };
-
-    function openModal(key){
-      const item = map[key];
-      if(!item) return;
-      titleEl.textContent = item.title;
-      const tpl = document.getElementById(item.tpl);
-      bodyEl.innerHTML = "";
-      bodyEl.appendChild(tpl.content.cloneNode(true));
-      modal.classList.add("show");
-    }
-
-    function closeModal(){
-      modal.classList.remove("show");
-      bodyEl.innerHTML = "";
-    }
-
-    window.addEventListener("keydown", (e) => {
-      if(e.key === "Escape") closeModal();
-    });
-
-    function sendMail(e){
-      e.preventDefault();
-
-      const name = document.getElementById("name").value.trim();
-      const email = document.getElementById("email").value.trim();
-      const phone = document.getElementById("phone").value.trim();
-      const type = document.getElementById("type").value;
-      const date = document.getElementById("date").value.trim();
-      const location = document.getElementById("location").value.trim();
-      const details = document.getElementById("details").value.trim();
-
-      const subject = encodeURIComponent(`Legacy On Location — Reserve Request (${type})`);
-      const body = encodeURIComponent(
-`Name: ${name}
-Email: ${email}
-Phone: ${phone}
-Request Type: ${type}
-Preferred Date(s): ${date}
-Location: ${location}
-
-Description / Requirements:
-${details}
-
-— Sent from Legacy On Location website`
-      );
-
-      window.location.href = `mailto:legacyonlocation@gmail.com?subject=${subject}&body=${body}`;
-      return false;
-    }
-
-    window.openModal = openModal;
-    window.closeModal = closeModal;
-    window.sendMail = sendMail;
-  </script>
 </body>
 </html>
