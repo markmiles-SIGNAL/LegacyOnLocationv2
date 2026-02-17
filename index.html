@@ -109,8 +109,8 @@ html, body {
 .modalBackdrop {
   position: absolute;
   inset: 0;
-  background: rgba(0,0,0,.65);
-  backdrop-filter: blur(10px);
+  background: rgba(0,0,0,.55);
+  backdrop-filter: blur(14px);
 }
 
 .modalCard {
@@ -119,9 +119,10 @@ html, body {
   width: min(1000px, 95vw);
   max-height: 85vh;
   overflow: auto;
-  background: rgba(20,22,20,.96);
+  background: rgba(20,22,20,.92);
   border-radius: 26px;
   padding: 30px;
+  border: 1px solid rgba(255,255,255,.12);
 }
 
 .modalCard h2 {
@@ -152,6 +153,7 @@ html, body {
 .offering p {
   font-size: 22px;
   line-height: 1.8;
+  margin: 0 0 10px;
 }
 
 .pills {
@@ -168,6 +170,56 @@ html, body {
   font-size: 12px;
   letter-spacing: .06em;
   text-transform: uppercase;
+}
+
+/* GALLERY */
+.galleryGrid{
+  display:grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 12px;
+  margin-top: 14px;
+}
+
+.gShot{
+  grid-column: span 6;
+  border-radius: 18px;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,.14);
+  background: rgba(0,0,0,.22);
+}
+
+.gShot.wide{ grid-column: span 12; }
+
+.gShot img{
+  width: 100%;
+  height: 360px;
+  object-fit: cover;
+  display:block;
+
+  transform: scale(1.001);
+  transition: transform 220ms ease, filter 220ms ease;
+  will-change: transform;
+}
+
+.gShot:hover img{
+  transform: scale(1.035);
+  filter: saturate(1.05) contrast(1.02);
+}
+
+.gCap{
+  padding: 12px;
+  font-size: 13px;
+  line-height: 1.5;
+  color: rgba(255,255,255,.80);
+  border-top: 1px solid rgba(255,255,255,.10);
+  background: rgba(0,0,0,.18);
+}
+.gCap b{ color: rgba(255,255,255,.95); }
+.gCap em{ font-style: normal; color: rgba(255,255,255,.70); }
+
+@media(max-width: 900px){
+  .gShot{ grid-column: span 12; }
+  .gShot img{ height: 320px; }
 }
 
 /* Mobile nav spacing */
@@ -210,48 +262,129 @@ const titleEl = document.getElementById("modalTitle");
 const bodyEl = document.getElementById("modalBody");
 
 const sections = {
-offering: {
-title: "The Offering",
-content: `
-<div class="offering">
-<div class="sectionBox">
-<p><b>Legacy On Location stages a one-of-a-kind Defender 110 Heritage Edition as a cinematic backdrop for moments that matter.</b></p>
-</div>
-<div class="sectionBox">
-<b>Areas Served</b>
-<div class="pills">
-<span class="pill">SF</span>
-<span class="pill">Marin</span>
-<span class="pill">Napa</span>
-<span class="pill">Sonoma</span>
-<span class="pill">East Bay</span>
-<span class="pill">Peninsula</span>
-</div>
-</div>
-</div>`
-},
-gallery: {
-title: "Gallery",
-content: `<p>Gallery content placeholder.</p>`
-},
-reserve: {
-title: "Reserve",
-content: `<p>Email <b>legacyonlocation@gmail.com</b> with date, location, and details for availability and quote.</p>`
-},
-about: {
-title: "About",
-content: `<p>Premium curated staging. Not casual rental. COI required for production use.</p>`
-}
+  offering: {
+    title: "The Offering",
+    content: `
+      <div class="offering">
+        <div class="sectionBox">
+          <p><b>Legacy On Location stages a one-of-a-kind Defender 110 Heritage Edition as a cinematic backdrop for moments that matter.</b></p>
+          <p style="opacity:.82;margin:0;">
+            Designed for weddings, family gatherings, photo shoots, creators, and film/television productions.
+            This is curated staging — not casual rental.
+          </p>
+        </div>
+
+        <div class="sectionBox">
+          <b>Areas Served</b>
+          <div class="pills">
+            <span class="pill">SF</span>
+            <span class="pill">Marin</span>
+            <span class="pill">Napa</span>
+            <span class="pill">Sonoma</span>
+            <span class="pill">East Bay</span>
+            <span class="pill">Peninsula</span>
+          </div>
+        </div>
+      </div>
+    `
+  },
+
+  gallery: {
+    title: "Gallery",
+    content: `
+      <p style="margin:0 0 10px;opacity:.85;">Selected moments on location.</p>
+
+      <div class="galleryGrid">
+        <div class="gShot wide">
+          <img src="JamesBond-Skyfall-Extra.jpeg" alt="On set as extra prop in James Bond Skyfall"
+               loading="lazy" decoding="async" width="1600" height="900">
+          <div class="gCap">
+            <b>On set as extra prop in James Bond Skyfall.</b><br>
+            <em>Location:</em> The Scottish Highlands (2018).
+          </div>
+        </div>
+
+        <div class="gShot">
+          <img src="D110-JamesBaroud-Session.jpeg" alt="James Baroud rooftop tents photo shoot"
+               loading="lazy" decoding="async" width="1600" height="900">
+          <div class="gCap">
+            <b>On location brand photo shoot for James Baroud rooftop tents.</b><br>
+            <em>Location:</em> Bearsden, Scotland.
+          </div>
+        </div>
+
+        <div class="gShot">
+          <img src="D110-Explore-Scotland-Shoot.jpeg" alt="Corporate retreat at Balloch Castle"
+               loading="lazy" decoding="async" width="1600" height="900">
+          <div class="gCap">
+            <b>Corporate retreat on location.</b><br>
+            <em>Location:</em> Loch Lomond, Scotland.
+          </div>
+        </div>
+
+        <div class="gShot">
+          <img src="D110-Family-Kilts-LochLomond.jpeg" alt="Family Christmas Kilts"
+               loading="lazy" decoding="async" width="1600" height="900">
+          <div class="gCap">
+            <b>Family Christmas Kilts.</b><br>
+            <em>Location:</em> Loch Lomond, Scotland.
+          </div>
+        </div>
+
+        <div class="gShot">
+          <img src="Corporate-Tree-Cutting-Day-Highlands.jpeg" alt="Tree cutting day"
+               loading="lazy" decoding="async" width="1600" height="900">
+          <div class="gCap">
+            <b>Christmas tree cutting day.</b><br>
+            <em>Location:</em> The Highlands, Scotland.
+          </div>
+        </div>
+
+        <div class="gShot wide">
+          <img src="Estate%20Sale-Bearsden-Glasgow.jpeg" alt="Large estate sale staging"
+               loading="lazy" decoding="async" width="1600" height="900">
+          <div class="gCap">
+            <b>Large estate sale staging.</b><br>
+            <em>Location:</em> Bearsden, Glasgow.
+          </div>
+        </div>
+      </div>
+    `
+  },
+
+  reserve: {
+    title: "Reserve",
+    content: `
+      <div class="sectionBox">
+        <p style="margin:0; font-size:18px; line-height:1.7; opacity:.9;">
+          Email <b>legacyonlocation@gmail.com</b> with your date, location, and requirements.
+          We’ll reply with availability and a tailored quote.
+        </p>
+      </div>
+    `
+  },
+
+  about: {
+    title: "About",
+    content: `
+      <div class="sectionBox">
+        <p style="margin:0; font-size:18px; line-height:1.7; opacity:.9;">
+          Premium curated staging. Not casual rental. COI required for production use.
+          Sessions are designed to protect the vehicle’s rarity and deliver a cinematic experience.
+        </p>
+      </div>
+    `
+  }
 };
 
 function openModal(key){
-titleEl.textContent = sections[key].title;
-bodyEl.innerHTML = sections[key].content;
-modal.classList.add("show");
+  titleEl.textContent = sections[key].title;
+  bodyEl.innerHTML = sections[key].content;
+  modal.classList.add("show");
 }
 
 function closeModal(){
-modal.classList.remove("show");
+  modal.classList.remove("show");
 }
 </script>
 
