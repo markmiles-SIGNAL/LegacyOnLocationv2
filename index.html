@@ -16,6 +16,7 @@
     --line: rgba(255,255,255,.18);
     --glass: rgba(0,0,0,.18);
     --glass2: rgba(0,0,0,.26);
+    --panel: rgba(16,18,16,.88);
     --shadow: 0 28px 90px rgba(0,0,0,.55);
   }
 
@@ -30,7 +31,7 @@
     text-rendering: optimizeLegibility;
   }
 
-  /* HERO */
+  /* HERO (homepage backdrop) */
   .hero{
     position:fixed;
     inset:0;
@@ -48,13 +49,13 @@
     z-index:0;
 
     /* ultra-smooth rendering */
-    will-change: transform, opacity, background-image;
+    will-change: transform, opacity, background-image, filter;
     transform: translateZ(0);
     backface-visibility: hidden;
 
     /* fade-in after image load */
     opacity:0;
-    transition: opacity 700ms ease;
+    transition: opacity 700ms ease, filter 220ms ease;
   }
   .hero.is-loaded{ opacity:1; }
 
@@ -66,7 +67,7 @@
     }
   }
 
-  /* Subtle top gradient only for nav readability */
+  /* Top gradient only for nav readability */
   .hero::after{
     content:"";
     position:absolute;
@@ -81,7 +82,7 @@
     pointer-events:none;
   }
 
-  /* Optional: very light vignette for premium depth (does NOT darken image heavily) */
+  /* Ultra light vignette */
   .hero::before{
     content:"";
     position:absolute;
@@ -170,12 +171,13 @@
   }
   .modal.show{ display:flex; }
 
+  /* BACKDROP: now uses blurred hero instead of dark black */
   .modalBackdrop{
     position:absolute;
     inset:0;
-    background: rgba(0,0,0,.60);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
+    background: rgba(0,0,0,.42);
+    backdrop-filter: blur(14px) saturate(120%);
+    -webkit-backdrop-filter: blur(14px) saturate(120%);
 
     opacity:0;
     transition: opacity 220ms ease;
@@ -189,7 +191,7 @@
     max-height:86vh;
     overflow:auto;
 
-    background: rgba(16,18,16,.92);
+    background: var(--panel);
     border:1px solid rgba(255,255,255,.16);
     border-radius:28px;
     box-shadow: var(--shadow);
@@ -332,12 +334,14 @@
   .cap{
     padding:12px;
     font-size:13px;
-    color: rgba(255,255,255,.78);
+    color: rgba(255,255,255,.82);
     border-top:1px solid rgba(255,255,255,.10);
     background: rgba(0,0,0,.18);
     line-height: 1.5;
   }
-  .cap b{ color: rgba(255,255,255,.92); }
+  .cap b{ color: rgba(255,255,255,.96); }
+  .cap em{ font-style: normal; color: rgba(255,255,255,.74); }
+
   @media (max-width: 980px){
     .shot{ grid-column: span 12; }
   }
@@ -495,14 +499,14 @@
   </template>
 
   <template id="tpl-gallery">
-    <p style="margin-bottom:6px; color: rgba(255,255,255,.80);">Selected moments on location.</p>
+    <p style="margin-bottom:6px; color: rgba(255,255,255,.84);">Selected moments on location.</p>
 
     <div class="gallery">
       <figure class="shot wide">
         <img src="JamesBond_Skyfall_Extra.jpeg" alt="On set as extra prop in James Bond Skyfall" loading="lazy" decoding="async" />
         <figcaption class="cap">
           <b>On set as extra prop in James Bond Skyfall.</b><br>
-          Location: The Scottish Highlands (2018).
+          <em>Location:</em> The Scottish Highlands (2018).
         </figcaption>
       </figure>
 
@@ -510,7 +514,7 @@
         <img src="D110_JamesBaroud Session.jpeg" alt="Brand photo shoot for James Baroud rooftop tents" loading="lazy" decoding="async" />
         <figcaption class="cap">
           <b>On location brand photo shoot for James Baroud rooftop tents.</b><br>
-          Location: Bearsden, Scotland.
+          <em>Location:</em> Bearsden, Scotland.
         </figcaption>
       </figure>
 
@@ -518,7 +522,7 @@
         <img src="D110_Explore Scotland Shoot.jpeg" alt="Corporate Retreat at Balloch Castle" loading="lazy" decoding="async" />
         <figcaption class="cap">
           <b>Corporate Retreat at Balloch Castle.</b><br>
-          Location: Loch Lomond, Scotland.
+          <em>Location:</em> Loch Lomond, Scotland.
         </figcaption>
       </figure>
 
@@ -526,7 +530,7 @@
         <img src="D110_Family Kilts_LochLomond.jpeg" alt="Family Christmas Kilts" loading="lazy" decoding="async" />
         <figcaption class="cap">
           <b>Family Christmas Kilts.</b><br>
-          Location: Inverness, Scotland.
+          <em>Location:</em> Inverness, Scotland.
         </figcaption>
       </figure>
 
@@ -534,7 +538,7 @@
         <img src="Corprate Tree Cutting Day_Highlands.jpeg" alt="Bearsden Council Christmas Tree Farm" loading="lazy" decoding="async" />
         <figcaption class="cap">
           <b>Bearsden Council Christmas Tree Farm.</b><br>
-          Location: Glasgow, Scotland.
+          <em>Location:</em> Glasgow, Scotland.
         </figcaption>
       </figure>
 
@@ -542,14 +546,14 @@
         <img src="Estate Sale_Bearsden_Glasgow.jpeg" alt="Large Estate Sale" loading="lazy" decoding="async" />
         <figcaption class="cap">
           <b>Large Estate Sale.</b><br>
-          Location: Balloch, Scotland.
+          <em>Location:</em> Balloch, Scotland.
         </figcaption>
       </figure>
     </div>
   </template>
 
   <template id="tpl-about">
-    <p style="color: rgba(255,255,255,.80);">Top questions — answered briefly.</p>
+    <p style="color: rgba(255,255,255,.82);">Top questions — answered briefly.</p>
 
     <details open>
       <summary>Do clients drive the Defender?</summary>
@@ -588,7 +592,7 @@
   </template>
 
   <template id="tpl-reserve">
-    <p style="color: rgba(255,255,255,.80);">
+    <p style="color: rgba(255,255,255,.82);">
       Complete the request form below. This opens your email app (no backend required).
       We’ll respond with availability and a tailored quote.
     </p>
@@ -656,7 +660,6 @@
     about:    { title: "About",        tpl: "tpl-about"    },
   };
 
-  // Ultra-smooth hero paint: preload correct hero based on breakpoint, then fade in
   function currentHeroSrc(){
     return window.matchMedia("(max-width: 768px)").matches
       ? "./hero-winner-mobile-wide.png"
@@ -668,21 +671,29 @@
       const img = new Image();
       img.onload = () => resolve(true);
       img.onerror = () => resolve(false);
-      img.src = src + "?v=" + Date.now(); // bust cache for first test paint
+      img.src = src + "?v=" + Date.now();
     });
   }
 
   (async () => {
     const src = currentHeroSrc();
     await preload(src);
-    // Background image already set via CSS; we just fade it in once the asset is ready
     requestAnimationFrame(() => {
       heroEl.classList.add("is-loaded");
       navEl.classList.add("is-loaded");
     });
   })();
 
-  // Swap/fade if user rotates or resizes across breakpoint
+  // ✅ Blur hero slightly when a modal is open, so content is legible without going "black"
+  function setModalState(isOpen){
+    if(isOpen){
+      heroEl.style.filter = "blur(10px) saturate(115%) brightness(1.05)";
+    }else{
+      heroEl.style.filter = "";
+    }
+  }
+
+  // Swap/fade if resized across breakpoint
   let lastSrc = currentHeroSrc();
   let resizeTimer = null;
   window.addEventListener("resize", () => {
@@ -692,11 +703,8 @@
       if(next === lastSrc) return;
       lastSrc = next;
 
-      // Fade out quickly, preload, then fade back in
       heroEl.classList.remove("is-loaded");
       await preload(next);
-
-      // Set inline background to ensure instant swap (overrides CSS)
       heroEl.style.backgroundImage = `url("${next}")`;
       requestAnimationFrame(() => heroEl.classList.add("is-loaded"));
     }, 150);
@@ -705,11 +713,14 @@
   function openModal(key){
     const item = map[key];
     if(!item) return;
+
     titleEl.textContent = item.title;
     const tpl = document.getElementById(item.tpl);
     bodyEl.innerHTML = "";
     bodyEl.appendChild(tpl.content.cloneNode(true));
+
     modal.classList.add("show");
+    setModalState(true);
 
     // prevent background scroll while modal is open
     document.documentElement.style.overflow = "hidden";
@@ -719,6 +730,8 @@
   function closeModal(){
     modal.classList.remove("show");
     bodyEl.innerHTML = "";
+    setModalState(false);
+
     document.documentElement.style.overflow = "";
     document.body.style.overflow = "";
   }
