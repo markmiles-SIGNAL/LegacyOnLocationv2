@@ -5,229 +5,123 @@
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>Legacy On Location — Memories Matter.</title>
 
-<style>
-* { box-sizing: border-box; }
+<link rel="preload" as="image" href="hero-winner.png" fetchpriority="high">
+<link rel="preload" as="image" href="hero-winner-mobile-wide.png" media="(max-width: 768px)" fetchpriority="high">
 
-html, body {
-  margin: 0;
-  padding: 0;
-  font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
-  background: #000;
-  color: #fff;
+<style>
+*{box-sizing:border-box}
+html,body{
+  margin:0;padding:0;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial;
+  background:#000;color:#fff;
 }
 
 /* HERO */
-.hero {
-  position: fixed;
-  inset: 0;
-  height: 100vh;
-  height: 100svh;
-  height: 100dvh;
-  width: 100vw;
-
-  background-image: url("./hero-winner.png");
-  background-size: cover;
-  background-position: center 60%;
-  background-repeat: no-repeat;
-  z-index: 0;
+.hero{
+  position:fixed;inset:0;
+  height:100vh;width:100vw;
+  background:url("hero-winner.png") center 60%/cover no-repeat;
+  z-index:0;
 }
-
-/* Mobile version */
-@media (max-width: 768px) {
-  .hero {
-    background-image: url("./hero-winner-mobile-wide.png");
-    background-position: center center;
-  }
+@media(max-width:768px){
+  .hero{background:url("hero-winner-mobile-wide.png") center/cover no-repeat;}
 }
-
-/* Top gradient for nav readability */
-.hero::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 220px;
-  background: linear-gradient(
-    to bottom,
-    rgba(0,0,0,.45),
-    rgba(0,0,0,.15),
-    rgba(0,0,0,0)
-  );
+.hero::after{
+  content:"";position:absolute;top:0;left:0;width:100%;height:220px;
+  background:linear-gradient(to bottom,rgba(0,0,0,.45),rgba(0,0,0,.15),rgba(0,0,0,0));
 }
 
 /* NAV */
-.nav {
-  position: fixed;
-  top: 18px;
-  left: 18px;
-  right: 18px;
-  display: flex;
-  justify-content: space-between;
-  z-index: 5;
+.nav{
+  position:fixed;top:18px;left:18px;right:18px;
+  display:flex;justify-content:space-between;z-index:5;
 }
-
-.navLeft,
-.navRight {
-  display: flex;
-  gap: 12px;
-  flex-wrap: wrap;
+.navLeft,.navRight{display:flex;gap:12px;flex-wrap:wrap}
+.nav a{
+  text-decoration:none;color:#fff;
+  font-size:14px;letter-spacing:.08em;text-transform:uppercase;
+  padding:14px 18px;border-radius:16px;
+  border:1px solid rgba(255,255,255,.25);
+  background:rgba(0,0,0,.25);
+  backdrop-filter:blur(8px);
+  transition:.2s ease;
 }
-
-.nav a {
-  text-decoration: none;
-  color: #fff;
-  font-size: 15px;
-  letter-spacing: .08em;
-  text-transform: uppercase;
-  padding: 14px 18px;
-  border-radius: 16px;
-  border: 1px solid rgba(255,255,255,.25);
-  background: rgba(0,0,0,.2);
-  backdrop-filter: blur(6px);
-  transition: 0.2s ease;
-}
-
-.nav a:hover {
-  background: rgba(255,255,255,.15);
-  transform: translateY(-2px);
-}
+.nav a:hover{background:rgba(255,255,255,.15);transform:translateY(-2px)}
 
 /* MODAL */
-.modal {
-  position: fixed;
-  inset: 0;
-  display: none;
-  align-items: center;
-  justify-content: center;
-  z-index: 50;
-  padding: 20px;
+.modal{
+  position:fixed;inset:0;display:none;
+  align-items:center;justify-content:center;
+  padding:20px;z-index:50;
+}
+.modal.show{display:flex}
+.modalBackdrop{
+  position:absolute;inset:0;
+  background:rgba(0,0,0,.6);
+  backdrop-filter:blur(14px);
+}
+.modalCard{
+  position:relative;z-index:2;
+  width:min(1100px,95vw);max-height:85vh;
+  overflow:auto;background:rgba(20,22,20,.94);
+  border-radius:26px;padding:30px;
+  border:1px solid rgba(255,255,255,.12);
+}
+.modalCard h2{
+  margin:0 0 16px;font-family:Georgia,serif;font-size:26px;
+}
+.close{
+  position:absolute;top:18px;right:18px;
+  border:1px solid rgba(255,255,255,.2);
+  background:rgba(255,255,255,.1);
+  color:#fff;padding:8px 14px;border-radius:14px;
+  cursor:pointer;
 }
 
-.modal.show { display: flex; }
-
-.modalBackdrop {
-  position: absolute;
-  inset: 0;
-  background: rgba(0,0,0,.55);
-  backdrop-filter: blur(14px);
+/* OFFERING */
+.sectionBox{
+  border-radius:20px;
+  border:1px solid rgba(255,255,255,.15);
+  padding:18px;margin-top:16px;
+  background:rgba(0,0,0,.25);
 }
-
-.modalCard {
-  position: relative;
-  z-index: 2;
-  width: min(1000px, 95vw);
-  max-height: 85vh;
-  overflow: auto;
-  background: rgba(20,22,20,.92);
-  border-radius: 26px;
-  padding: 30px;
-  border: 1px solid rgba(255,255,255,.12);
+.offering p{
+  font-size:22px;line-height:1.8;margin:0 0 12px;
 }
-
-.modalCard h2 {
-  margin-top: 0;
-  font-family: Georgia, serif;
-}
-
-.close {
-  position: absolute;
-  top: 18px;
-  right: 18px;
-  border: none;
-  background: rgba(255,255,255,.15);
-  color: #fff;
-  padding: 10px 14px;
-  border-radius: 14px;
-  cursor: pointer;
-}
-
-.sectionBox {
-  border-radius: 20px;
-  border: 1px solid rgba(255,255,255,.15);
-  padding: 18px;
-  margin-top: 16px;
-  background: rgba(0,0,0,.25);
-}
-
-.offering p {
-  font-size: 22px;
-  line-height: 1.8;
-  margin: 0 0 10px;
-}
-
-.pills {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-top: 12px;
-}
-
-.pill {
-  padding: 10px 14px;
-  border-radius: 999px;
-  border: 1px solid rgba(255,255,255,.2);
-  font-size: 12px;
-  letter-spacing: .06em;
-  text-transform: uppercase;
+.pills{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px}
+.pill{
+  padding:10px 14px;border-radius:999px;
+  border:1px solid rgba(255,255,255,.2);
+  font-size:12px;letter-spacing:.06em;text-transform:uppercase;
 }
 
 /* GALLERY */
 .galleryGrid{
-  display:grid;
-  grid-template-columns: repeat(12, 1fr);
-  gap: 12px;
-  margin-top: 14px;
+  display:grid;grid-template-columns:repeat(12,1fr);
+  gap:14px;margin-top:14px;
 }
-
-.gShot{
-  grid-column: span 6;
-  border-radius: 18px;
-  overflow: hidden;
-  border: 1px solid rgba(255,255,255,.14);
-  background: rgba(0,0,0,.22);
+figure.gShot{margin:0;grid-column:span 6;
+  border-radius:18px;overflow:hidden;
+  border:1px solid rgba(255,255,255,.15);
+  background:rgba(0,0,0,.22);
 }
-
-.gShot.wide{ grid-column: span 12; }
-
-.gShot img{
-  width: 100%;
-  height: 360px;
-  object-fit: cover;
-  display:block;
-
-  transform: scale(1.001);
-  transition: transform 220ms ease, filter 220ms ease;
-  will-change: transform;
+figure.gShot.wide{grid-column:span 12}
+.gMedia img{
+  width:100%;height:360px;object-fit:cover;display:block;
+  transition:transform .25s ease,filter .25s ease;
 }
-
-.gShot:hover img{
-  transform: scale(1.035);
-  filter: saturate(1.05) contrast(1.02);
+figure.gShot:hover .gMedia img{
+  transform:scale(1.04);
+  filter:saturate(1.05) contrast(1.02);
 }
-
 .gCap{
-  padding: 12px;
-  font-size: 13px;
-  line-height: 1.5;
-  color: rgba(255,255,255,.80);
-  border-top: 1px solid rgba(255,255,255,.10);
-  background: rgba(0,0,0,.18);
+  padding:12px;font-size:13px;line-height:1.5;
+  border-top:1px solid rgba(255,255,255,.1);
+  background:rgba(0,0,0,.18);
 }
-.gCap b{ color: rgba(255,255,255,.95); }
-.gCap em{ font-style: normal; color: rgba(255,255,255,.70); }
-
-@media(max-width: 900px){
-  .gShot{ grid-column: span 12; }
-  .gShot img{ height: 320px; }
-}
-
-/* Mobile nav spacing */
-@media(max-width:480px){
-  .nav a {
-    font-size: 14px;
-    padding: 12px 14px;
-  }
+@media(max-width:900px){
+  figure.gShot{grid-column:span 12}
+  .gMedia img{height:300px}
 }
 </style>
 </head>
@@ -256,135 +150,129 @@ html, body {
   </div>
 </div>
 
+<!-- OFFERING TEMPLATE -->
+<template id="tpl-offering">
+  <div class="offering">
+    <div class="sectionBox">
+      <p><b>Legacy On Location stages a one-of-a-kind Defender 110 Heritage Edition as a cinematic backdrop for moments that matter.</b></p>
+    </div>
+    <div class="sectionBox">
+      <b>Areas Served</b>
+      <div class="pills">
+        <span class="pill">SF</span>
+        <span class="pill">Marin</span>
+        <span class="pill">Napa</span>
+        <span class="pill">Sonoma</span>
+        <span class="pill">East Bay</span>
+        <span class="pill">Peninsula</span>
+      </div>
+    </div>
+  </div>
+</template>
+
+<!-- GALLERY TEMPLATE -->
+<template id="tpl-gallery">
+  <div class="galleryGrid">
+
+    <figure class="gShot wide">
+      <div class="gMedia">
+        <img src="JamesBond-Skyfall-Extra.jpeg" loading="lazy" decoding="async">
+      </div>
+      <figcaption class="gCap">
+        <b>On set as extra prop in James Bond Skyfall.</b><br>
+        Location: The Scottish Highlands (2018)
+      </figcaption>
+    </figure>
+
+    <figure class="gShot">
+      <div class="gMedia">
+        <img src="D110-JamesBaroud-Session.jpeg" loading="lazy" decoding="async">
+      </div>
+      <figcaption class="gCap">
+        <b>Brand shoot for James Baroud rooftop tents.</b><br>
+        Location: Bearsden, Scotland
+      </figcaption>
+    </figure>
+
+    <figure class="gShot">
+      <div class="gMedia">
+        <img src="D110-Explore-Scotland-Shoot.jpeg" loading="lazy" decoding="async">
+      </div>
+      <figcaption class="gCap">
+        <b>Corporate retreat.</b><br>
+        Location: Loch Lomond, Scotland
+      </figcaption>
+    </figure>
+
+    <figure class="gShot">
+      <div class="gMedia">
+        <img src="D110-Family-Kilts-LochLomond.jpeg" loading="lazy" decoding="async">
+      </div>
+      <figcaption class="gCap">
+        <b>Family Christmas Kilts.</b><br>
+        Location: Loch Lomond, Scotland
+      </figcaption>
+    </figure>
+
+    <figure class="gShot">
+      <div class="gMedia">
+        <img src="Corporate-Tree-Cutting-Day-Highlands.jpeg" loading="lazy" decoding="async">
+      </div>
+      <figcaption class="gCap">
+        <b>Christmas tree cutting day.</b><br>
+        Location: The Highlands, Scotland
+      </figcaption>
+    </figure>
+
+    <figure class="gShot wide">
+      <div class="gMedia">
+        <img src="Estate%20Sale-Bearsden-Glasgow.jpeg" loading="lazy" decoding="async">
+      </div>
+      <figcaption class="gCap">
+        <b>Large estate sale staging.</b><br>
+        Location: Bearsden, Glasgow
+      </figcaption>
+    </figure>
+
+  </div>
+</template>
+
+<template id="tpl-reserve">
+  <div class="sectionBox">
+    Email <b>legacyonlocation@gmail.com</b> with date, location, and requirements.
+  </div>
+</template>
+
+<template id="tpl-about">
+  <div class="sectionBox">
+    Premium curated staging. Not casual rental. COI required for production use.
+  </div>
+</template>
+
 <script>
-const modal = document.getElementById("modal");
-const titleEl = document.getElementById("modalTitle");
-const bodyEl = document.getElementById("modalBody");
+const modal=document.getElementById("modal");
+const titleEl=document.getElementById("modalTitle");
+const bodyEl=document.getElementById("modalBody");
 
-const sections = {
-  offering: {
-    title: "The Offering",
-    content: `
-      <div class="offering">
-        <div class="sectionBox">
-          <p><b>Legacy On Location stages a one-of-a-kind Defender 110 Heritage Edition as a cinematic backdrop for moments that matter.</b></p>
-          <p style="opacity:.82;margin:0;">
-            Designed for weddings, family gatherings, photo shoots, creators, and film/television productions.
-            This is curated staging — not casual rental.
-          </p>
-        </div>
-
-        <div class="sectionBox">
-          <b>Areas Served</b>
-          <div class="pills">
-            <span class="pill">SF</span>
-            <span class="pill">Marin</span>
-            <span class="pill">Napa</span>
-            <span class="pill">Sonoma</span>
-            <span class="pill">East Bay</span>
-            <span class="pill">Peninsula</span>
-          </div>
-        </div>
-      </div>
-    `
-  },
-
-  gallery: {
-    title: "Gallery",
-    content: `
-      <p style="margin:0 0 10px;opacity:.85;">Selected moments on location.</p>
-
-      <div class="galleryGrid">
-        <div class="gShot wide">
-          <img src="JamesBond-Skyfall-Extra.jpeg" alt="On set as extra prop in James Bond Skyfall"
-               loading="lazy" decoding="async" width="1600" height="900">
-          <div class="gCap">
-            <b>On set as extra prop in James Bond Skyfall.</b><br>
-            <em>Location:</em> The Scottish Highlands (2018).
-          </div>
-        </div>
-
-        <div class="gShot">
-          <img src="D110-JamesBaroud-Session.jpeg" alt="James Baroud rooftop tents photo shoot"
-               loading="lazy" decoding="async" width="1600" height="900">
-          <div class="gCap">
-            <b>On location brand photo shoot for James Baroud rooftop tents.</b><br>
-            <em>Location:</em> Bearsden, Scotland.
-          </div>
-        </div>
-
-        <div class="gShot">
-          <img src="D110-Explore-Scotland-Shoot.jpeg" alt="Corporate retreat at Balloch Castle"
-               loading="lazy" decoding="async" width="1600" height="900">
-          <div class="gCap">
-            <b>Corporate retreat on location.</b><br>
-            <em>Location:</em> Loch Lomond, Scotland.
-          </div>
-        </div>
-
-        <div class="gShot">
-          <img src="D110-Family-Kilts-LochLomond.jpeg" alt="Family Christmas Kilts"
-               loading="lazy" decoding="async" width="1600" height="900">
-          <div class="gCap">
-            <b>Family Christmas Kilts.</b><br>
-            <em>Location:</em> Loch Lomond, Scotland.
-          </div>
-        </div>
-
-        <div class="gShot">
-          <img src="Corporate-Tree-Cutting-Day-Highlands.jpeg" alt="Tree cutting day"
-               loading="lazy" decoding="async" width="1600" height="900">
-          <div class="gCap">
-            <b>Christmas tree cutting day.</b><br>
-            <em>Location:</em> The Highlands, Scotland.
-          </div>
-        </div>
-
-        <div class="gShot wide">
-          <img src="Estate%20Sale-Bearsden-Glasgow.jpeg" alt="Large estate sale staging"
-               loading="lazy" decoding="async" width="1600" height="900">
-          <div class="gCap">
-            <b>Large estate sale staging.</b><br>
-            <em>Location:</em> Bearsden, Glasgow.
-          </div>
-        </div>
-      </div>
-    `
-  },
-
-  reserve: {
-    title: "Reserve",
-    content: `
-      <div class="sectionBox">
-        <p style="margin:0; font-size:18px; line-height:1.7; opacity:.9;">
-          Email <b>legacyonlocation@gmail.com</b> with your date, location, and requirements.
-          We’ll reply with availability and a tailored quote.
-        </p>
-      </div>
-    `
-  },
-
-  about: {
-    title: "About",
-    content: `
-      <div class="sectionBox">
-        <p style="margin:0; font-size:18px; line-height:1.7; opacity:.9;">
-          Premium curated staging. Not casual rental. COI required for production use.
-          Sessions are designed to protect the vehicle’s rarity and deliver a cinematic experience.
-        </p>
-      </div>
-    `
-  }
+const sections={
+  offering:{title:"The Offering",tpl:"tpl-offering"},
+  gallery:{title:"Gallery",tpl:"tpl-gallery"},
+  reserve:{title:"Reserve",tpl:"tpl-reserve"},
+  about:{title:"About",tpl:"tpl-about"}
 };
 
 function openModal(key){
-  titleEl.textContent = sections[key].title;
-  bodyEl.innerHTML = sections[key].content;
+  titleEl.textContent=sections[key].title;
+  bodyEl.innerHTML="";
+  bodyEl.appendChild(
+    document.getElementById(sections[key].tpl).content.cloneNode(true)
+  );
   modal.classList.add("show");
 }
 
 function closeModal(){
   modal.classList.remove("show");
+  bodyEl.innerHTML="";
 }
 </script>
 
