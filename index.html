@@ -6,169 +6,113 @@
 <title>Legacy On Location — Memories Matter.</title>
 
 <style>
-* { box-sizing: border-box; }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;height:100%;}
+  body{
+    font-family: system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;
+    background:#000;
+    color:#fff;
+  }
 
-html, body {
-  margin: 0;
-  padding: 0;
-  font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
-  background: #000;
-  color: #fff;
-}
+  /* HERO: starts black, JS sets the correct image */
+  .hero{
+    position:fixed;
+    inset:0;
+    background:#000 center/cover no-repeat;
+    z-index:0;
+  }
 
-/* FULL SCREEN HERO */
-.hero {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: url("./hero-winner.png") center center / cover no-repeat;
-  z-index: 0;
-}
+  /* top-only gradient for nav readability */
+  .hero::after{
+    content:"";
+    position:absolute; left:0; top:0; right:0; height:220px;
+    background:linear-gradient(to bottom, rgba(0,0,0,.45), rgba(0,0,0,.15), rgba(0,0,0,0));
+    pointer-events:none;
+  }
 
-/* Top gradient only for nav readability */
-.hero::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 200px;
-  background: linear-gradient(
-    to bottom,
-    rgba(0,0,0,.45),
-    rgba(0,0,0,.15),
-    rgba(0,0,0,0)
-  );
-}
+  /* NAV */
+  .nav{
+    position:fixed;
+    top:20px; left:20px; right:20px;
+    display:flex; justify-content:space-between;
+    z-index:5;
+  }
+  .navLeft,.navRight{display:flex; gap:14px; flex-wrap:wrap;}
+  .nav a{
+    text-decoration:none;
+    color:rgba(255,255,255,.92);
+    font-size:16px;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    padding:14px 18px;
+    border-radius:18px;
+    border:1px solid rgba(255,255,255,.25);
+    background:rgba(0,0,0,.20);
+    backdrop-filter:blur(6px);
+    transition:.2s ease;
+  }
+  .nav a:hover{
+    background:rgba(255,255,255,.15);
+    transform:translateY(-2px);
+  }
 
-/* NAV */
-.nav {
-  position: fixed;
-  top: 20px;
-  left: 20px;
-  right: 20px;
-  display: flex;
-  justify-content: space-between;
-  z-index: 5;
-}
+  /* MODAL */
+  .modal{position:fixed; inset:0; display:none; align-items:center; justify-content:center; z-index:50; padding:20px;}
+  .modal.show{display:flex;}
+  .modalBackdrop{position:absolute; inset:0; background:rgba(0,0,0,.65); backdrop-filter:blur(10px);}
+  .modalCard{
+    position:relative; z-index:2;
+    width:min(1000px,95vw);
+    max-height:85vh; overflow:auto;
+    background:rgba(20,22,20,.96);
+    border-radius:26px;
+    padding:30px;
+  }
+  .modalCard h2{margin-top:0; font-family:Georgia,serif;}
+  .close{
+    position:absolute; top:18px; right:18px;
+    border:none; background:rgba(255,255,255,.15);
+    color:#fff; padding:10px 14px;
+    border-radius:14px; cursor:pointer;
+  }
 
-.navLeft,
-.navRight {
-  display: flex;
-  gap: 14px;
-}
+  .sectionBox{
+    border-radius:20px;
+    border:1px solid rgba(255,255,255,.15);
+    padding:18px;
+    margin-top:16px;
+    background:rgba(0,0,0,.25);
+  }
 
-.nav a {
-  text-decoration: none;
-  color: #fff;
-  font-size: 16px;
-  letter-spacing: .08em;
-  text-transform: uppercase;
-  padding: 14px 18px;
-  border-radius: 18px;
-  border: 1px solid rgba(255,255,255,.25);
-  background: rgba(0,0,0,.2);
-  backdrop-filter: blur(6px);
-  transition: 0.2s ease;
-}
+  /* Offering font increased */
+  .offering p{font-size:22px; line-height:1.8; margin:0 0 12px;}
 
-.nav a:hover {
-  background: rgba(255,255,255,.15);
-  transform: translateY(-2px);
-}
+  .pills{display:flex; flex-wrap:wrap; gap:10px; margin-top:12px;}
+  .pill{
+    padding:10px 14px;
+    border-radius:999px;
+    border:1px solid rgba(255,255,255,.2);
+    font-size:12px;
+    letter-spacing:.06em;
+    text-transform:uppercase;
+  }
 
-/* MODAL */
-.modal {
-  position: fixed;
-  inset: 0;
-  display: none;
-  align-items: center;
-  justify-content: center;
-  z-index: 50;
-  padding: 20px;
-}
-
-.modal.show {
-  display: flex;
-}
-
-.modalBackdrop {
-  position: absolute;
-  inset: 0;
-  background: rgba(0,0,0,.65);
-  backdrop-filter: blur(10px);
-}
-
-.modalCard {
-  position: relative;
-  z-index: 2;
-  width: min(1000px, 95vw);
-  max-height: 85vh;
-  overflow: auto;
-  background: rgba(20,22,20,.96);
-  border-radius: 26px;
-  padding: 30px;
-}
-
-.modalCard h2 {
-  margin-top: 0;
-  font-family: Georgia, serif;
-}
-
-.close {
-  position: absolute;
-  top: 18px;
-  right: 18px;
-  border: none;
-  background: rgba(255,255,255,.15);
-  color: #fff;
-  padding: 10px 14px;
-  border-radius: 14px;
-  cursor: pointer;
-}
-
-.sectionBox {
-  border-radius: 20px;
-  border: 1px solid rgba(255,255,255,.15);
-  padding: 18px;
-  margin-top: 16px;
-  background: rgba(0,0,0,.25);
-}
-
-/* Offering font enlarged */
-.offering p {
-  font-size: 22px;
-  line-height: 1.8;
-}
-
-/* Areas Served */
-.pills {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-top: 12px;
-}
-
-.pill {
-  padding: 10px 14px;
-  border-radius: 999px;
-  border: 1px solid rgba(255,255,255,.2);
-  font-size: 12px;
-  letter-spacing: .06em;
-  text-transform: uppercase;
-}
-
-@media(max-width: 900px){
-  .modalCard { width: 95vw; }
-}
+  /* DEBUG badge (shows which hero file loaded) */
+  .debug{
+    position:fixed; left:14px; bottom:14px; z-index:9;
+    font-size:12px; letter-spacing:.04em;
+    color:rgba(255,255,255,.85);
+    background:rgba(0,0,0,.35);
+    border:1px solid rgba(255,255,255,.18);
+    padding:10px 12px; border-radius:14px;
+    backdrop-filter:blur(6px);
+  }
 </style>
 </head>
 
 <body>
 
-<div class="hero"></div>
+<div class="hero" id="hero"></div>
 
 <div class="nav">
   <div class="navLeft">
@@ -190,55 +134,90 @@ html, body {
   </div>
 </div>
 
+<div class="debug" id="debug">Hero: loading…</div>
+
 <script>
-const modal = document.getElementById("modal");
-const titleEl = document.getElementById("modalTitle");
-const bodyEl = document.getElementById("modalBody");
+  // CASE/NAME-PROOF HERO LOADER
+  // Put BOTH possibilities here. It will use whichever exists.
+  const HERO_CANDIDATES = [
+    "./hero-winner.png",
+    "./Hero-winner.png",
+    "./HERO-WINNER.png"
+  ];
 
-const sections = {
-offering: {
-title: "The Offering",
-content: `
-<div class="offering">
-<div class="sectionBox">
-<p><b>Legacy On Location stages a one-of-a-kind Defender 110 Heritage Edition as a cinematic backdrop for moments that matter.</b></p>
-</div>
-<div class="sectionBox">
-<b>Areas Served</b>
-<div class="pills">
-<span class="pill">SF</span>
-<span class="pill">Marin</span>
-<span class="pill">Napa</span>
-<span class="pill">Sonoma</span>
-<span class="pill">East Bay</span>
-<span class="pill">Peninsula</span>
-</div>
-</div>
-</div>`
-},
-gallery: {
-title: "Gallery",
-content: `<p>Gallery content placeholder.</p>`
-},
-reserve: {
-title: "Reserve",
-content: `<p>Email <b>legacyonlocation@gmail.com</b> with date, location, and details for availability and quote.</p>`
-},
-about: {
-title: "About",
-content: `<p>Premium curated staging. Not casual rental. COI required for production use.</p>`
-}
-};
+  const heroEl = document.getElementById("hero");
+  const debugEl = document.getElementById("debug");
 
-function openModal(key){
-titleEl.textContent = sections[key].title;
-bodyEl.innerHTML = sections[key].content;
-modal.classList.add("show");
-}
+  function tryLoad(src){
+    return new Promise((resolve, reject) => {
+      const img = new Image();
+      img.onload = () => resolve(src);
+      img.onerror = () => reject(src);
+      img.src = src + "?v=" + Date.now(); // bypass caching
+    });
+  }
 
-function closeModal(){
-modal.classList.remove("show");
-}
+  (async () => {
+    for (const src of HERO_CANDIDATES){
+      try{
+        const ok = await tryLoad(src);
+        heroEl.style.backgroundImage = `url("${ok}")`;
+        debugEl.textContent = `Hero: ${ok.replace("./","")}`;
+        return;
+      }catch(e){}
+    }
+    debugEl.textContent = "Hero: NOT FOUND — check filename + repo root";
+  })();
+
+  // MODALS
+  const modal=document.getElementById("modal");
+  const titleEl=document.getElementById("modalTitle");
+  const bodyEl=document.getElementById("modalBody");
+
+  const sections={
+    offering:{
+      title:"The Offering",
+      content:`
+        <div class="offering">
+          <div class="sectionBox">
+            <p><b>Legacy On Location stages a one-of-a-kind Defender 110 Heritage Edition as a cinematic backdrop for moments that matter.</b></p>
+          </div>
+          <div class="sectionBox">
+            <b>Areas Served</b>
+            <div class="pills">
+              <span class="pill">SF</span>
+              <span class="pill">Marin</span>
+              <span class="pill">Napa</span>
+              <span class="pill">Sonoma</span>
+              <span class="pill">East Bay</span>
+              <span class="pill">Peninsula</span>
+            </div>
+          </div>
+        </div>`
+    },
+    gallery:{
+      title:"Gallery",
+      content:`<p>Gallery content placeholder.</p>`
+    },
+    reserve:{
+      title:"Reserve",
+      content:`<p>Email <b>legacyonlocation@gmail.com</b> with date, location, and details for availability and quote.</p>`
+    },
+    about:{
+      title:"About",
+      content:`<p>Premium curated staging. Not casual rental. COI required for production use.</p>`
+    }
+  };
+
+  function openModal(key){
+    titleEl.textContent=sections[key].title;
+    bodyEl.innerHTML=sections[key].content;
+    modal.classList.add("show");
+  }
+  function closeModal(){ modal.classList.remove("show"); }
+
+  window.openModal=openModal;
+  window.closeModal=closeModal;
 </script>
 
 </body>
