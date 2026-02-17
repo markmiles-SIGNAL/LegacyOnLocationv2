@@ -1,958 +1,259 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Legacy On Location — Memories Matter.</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Legacy On Location — Memories Matter.</title>
 
-  <!-- Preload hero imagery for faster first paint -->
-  <link rel="preload" as="image" href="hero-winner.png" fetchpriority="high">
-  <link rel="preload" as="image" href="hero-winner-mobile-wide.png" media="(max-width: 768px)" fetchpriority="high">
+<style>
+* { box-sizing: border-box; }
 
-  <style>
-    :root{
-      --text: rgba(255,255,255,.92);
-      --text2: rgba(255,255,255,.78);
-      --line: rgba(255,255,255,.18);
-      --glass: rgba(0,0,0,.18);
-      --panel: rgba(16,18,16,.90);
-      --shadow: 0 28px 90px rgba(0,0,0,.55);
-      --radius: 22px;
-    }
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+  background: #000;
+  color: #fff;
+}
 
-    *{ box-sizing:border-box; }
-    html,body{ margin:0; padding:0; height:100%; }
-    body{
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
-      background:#000;
-      color:#fff;
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
-      text-rendering: optimizeLegibility;
-      overflow-x:hidden;
-    }
+/* HERO */
+.hero {
+  position: fixed;
+  inset: 0;
+  height: 100vh;
+  height: 100svh;
+  height: 100dvh;
+  width: 100vw;
 
-    /* HERO (homepage backdrop) */
-    .hero{
-      position:fixed;
-      inset:0;
-      height:100vh;
-      height:100svh;
-      height:100dvh;
-      width:100vw;
+  background-image: url("./hero-winner.png");
+  background-size: cover;
+  background-position: center 60%;
+  background-repeat: no-repeat;
+  z-index: 0;
+}
 
-      background-color:#000;
-      background-image:url("./hero-winner.png");
-      background-size:cover;
-      background-position:center 60%;
-      background-repeat:no-repeat;
+/* Mobile version */
+@media (max-width: 768px) {
+  .hero {
+    background-image: url("./hero-winner-mobile-wide.png");
+    background-position: center center;
+  }
+}
 
-      z-index:0;
+/* Top gradient for nav readability */
+.hero::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 220px;
+  background: linear-gradient(
+    to bottom,
+    rgba(0,0,0,.45),
+    rgba(0,0,0,.15),
+    rgba(0,0,0,0)
+  );
+}
 
-      will-change: transform, opacity, filter;
-      transform: translateZ(0);
-      backface-visibility: hidden;
+/* NAV */
+.nav {
+  position: fixed;
+  top: 18px;
+  left: 18px;
+  right: 18px;
+  display: flex;
+  justify-content: space-between;
+  z-index: 5;
+}
 
-      opacity:0;
-      transition: opacity 700ms ease, filter 240ms ease;
-    }
-    .hero.is-loaded{ opacity:1; }
+.navLeft,
+.navRight {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
 
-    @media (max-width: 768px){
-      .hero{
-        background-image:url("./hero-winner-mobile-wide.png");
-        background-position:center center;
-      }
-    }
+.nav a {
+  text-decoration: none;
+  color: #fff;
+  font-size: 15px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  padding: 14px 18px;
+  border-radius: 16px;
+  border: 1px solid rgba(255,255,255,.25);
+  background: rgba(0,0,0,.2);
+  backdrop-filter: blur(6px);
+  transition: 0.2s ease;
+}
 
-    /* Top gradient for nav readability */
-    .hero::after{
-      content:"";
-      position:absolute;
-      top:0; left:0; right:0;
-      height:260px;
-      background: linear-gradient(
-        to bottom,
-        rgba(0,0,0,.52),
-        rgba(0,0,0,.22),
-        rgba(0,0,0,0)
-      );
-      pointer-events:none;
-    }
+.nav a:hover {
+  background: rgba(255,255,255,.15);
+  transform: translateY(-2px);
+}
 
-    /* Light vignette */
-    .hero::before{
-      content:"";
-      position:absolute;
-      inset:0;
-      background: radial-gradient(
-        1200px 900px at 50% 52%,
-        rgba(0,0,0,0) 0%,
-        rgba(0,0,0,.07) 60%,
-        rgba(0,0,0,.14) 100%
-      );
-      pointer-events:none;
-    }
+/* MODAL */
+.modal {
+  position: fixed;
+  inset: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+  padding: 20px;
+}
 
-    /* NAV */
-    .nav{
-      position:fixed;
-      top:18px;
-      left:18px;
-      right:18px;
-      display:flex;
-      justify-content:space-between;
-      gap:12px;
-      z-index:5;
+.modal.show { display: flex; }
 
-      opacity:0;
-      transform: translateY(-6px);
-      transition: opacity 520ms ease, transform 520ms ease;
-    }
-    .nav.is-loaded{
-      opacity:1;
-      transform: translateY(0);
-    }
+.modalBackdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,.65);
+  backdrop-filter: blur(10px);
+}
 
-    .navLeft,.navRight{
-      display:flex;
-      gap:12px;
-      flex-wrap:wrap;
-      align-items:center;
-    }
+.modalCard {
+  position: relative;
+  z-index: 2;
+  width: min(1000px, 95vw);
+  max-height: 85vh;
+  overflow: auto;
+  background: rgba(20,22,20,.96);
+  border-radius: 26px;
+  padding: 30px;
+}
 
-    .nav a{
-      text-decoration:none;
-      color:var(--text);
-      font-size:15px;
-      letter-spacing:.08em;
-      text-transform:uppercase;
-      padding:14px 18px;
-      border-radius:16px;
-      border:1px solid rgba(255,255,255,.22);
-      background: var(--glass);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      box-shadow: 0 10px 34px rgba(0,0,0,.18);
-      text-shadow: 0 10px 22px rgba(0,0,0,.35);
-      transition: transform 180ms ease, background 180ms ease, border-color 180ms ease;
-    }
-    .nav a:hover{
-      background: rgba(255,255,255,.14);
-      border-color: rgba(255,255,255,.34);
-      transform: translateY(-2px);
-    }
-    .nav a:active{ transform: translateY(0px); }
+.modalCard h2 {
+  margin-top: 0;
+  font-family: Georgia, serif;
+}
 
-    @media(max-width:480px){
-      .nav{ top:14px; left:14px; right:14px; }
-      .nav a{ font-size:14px; padding:12px 14px; border-radius:14px; }
-      .navLeft,.navRight{ gap:10px; }
-    }
+.close {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  border: none;
+  background: rgba(255,255,255,.15);
+  color: #fff;
+  padding: 10px 14px;
+  border-radius: 14px;
+  cursor: pointer;
+}
 
-    /* MODAL (content) */
-    .modal{
-      position:fixed;
-      inset:0;
-      display:none;
-      align-items:center;
-      justify-content:center;
-      z-index:50;
-      padding:18px;
-    }
-    .modal.show{ display:flex; }
+.sectionBox {
+  border-radius: 20px;
+  border: 1px solid rgba(255,255,255,.15);
+  padding: 18px;
+  margin-top: 16px;
+  background: rgba(0,0,0,.25);
+}
 
-    .modalBackdrop{
-      position:absolute;
-      inset:0;
-      background: rgba(0,0,0,.42);
-      backdrop-filter: blur(14px) saturate(120%);
-      -webkit-backdrop-filter: blur(14px) saturate(120%);
-      opacity:0;
-      transition: opacity 220ms ease;
-    }
-    .modal.show .modalBackdrop{ opacity:1; }
+.offering p {
+  font-size: 22px;
+  line-height: 1.8;
+}
 
-    .modalCard{
-      position:relative;
-      z-index:2;
-      width:min(1180px, 96vw);
-      max-height:86vh;
-      overflow:auto;
+.pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 12px;
+}
 
-      background: var(--panel);
-      border:1px solid rgba(255,255,255,.16);
-      border-radius:28px;
-      box-shadow: var(--shadow);
-      padding:26px;
+.pill {
+  padding: 10px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,.2);
+  font-size: 12px;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
 
-      transform: translateY(10px) scale(.99);
-      opacity:0;
-      transition: transform 240ms ease, opacity 240ms ease;
-    }
-    .modal.show .modalCard{
-      transform: translateY(0) scale(1);
-      opacity:1;
-    }
-
-    .modalTop{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap:12px;
-      margin-bottom:14px;
-    }
-    .modalTop h2{
-      margin:0;
-      font-family: Georgia, "Times New Roman", serif;
-      font-size:26px;
-      letter-spacing:-.01em;
-    }
-
-    .close{
-      cursor:pointer;
-      border:1px solid rgba(255,255,255,.18);
-      background: rgba(255,255,255,.10);
-      color:#fff;
-      padding:12px 16px;
-      border-radius:16px;
-      font-size:14px;
-      transition: background 160ms ease, transform 160ms ease;
-    }
-    .close:hover{ background: rgba(255,255,255,.16); transform: translateY(-1px); }
-    .close:active{ transform: translateY(0); }
-
-    /* CONTENT BLOCKS */
-    .sectionBox{
-      border-radius: var(--radius);
-      border: 1px solid rgba(255,255,255,.14);
-      background: rgba(0,0,0,.18);
-      padding: 20px;
-      margin-top: 14px;
-    }
-
-    /* Offering font (+30%) */
-    .offering p{
-      margin:0 0 12px;
-      color: var(--text2);
-      font-size: 21px;
-      line-height:1.78;
-      max-width: 92ch;
-    }
-    .offering b{ color: var(--text); }
-    .offering .small{
-      font-size: 18px;
-      color: rgba(255,255,255,.78);
-    }
-
-    .cards{
-      display:grid;
-      grid-template-columns: repeat(3, minmax(0,1fr));
-      gap:12px;
-      margin-top:14px;
-    }
-    .card{
-      border-radius:18px;
-      border:1px solid rgba(255,255,255,.14);
-      background: rgba(0,0,0,.18);
-      padding:14px;
-    }
-    .card strong{
-      display:block;
-      font-size:12px;
-      letter-spacing:.08em;
-      text-transform:uppercase;
-      margin-bottom:6px;
-      color: rgba(255,255,255,.92);
-    }
-    .card span{
-      display:block;
-      font-size:15px;
-      line-height:1.55;
-      color: rgba(255,255,255,.78);
-    }
-
-    .pills{
-      display:flex;
-      flex-wrap:wrap;
-      gap:10px;
-      margin-top:10px;
-    }
-    .pill{
-      padding:10px 14px;
-      border-radius:999px;
-      border:1px solid rgba(255,255,255,.18);
-      background: rgba(255,255,255,.06);
-      color: rgba(255,255,255,.84);
-      font-size:12px;
-      letter-spacing:.06em;
-      text-transform:uppercase;
-    }
-
-    @media (max-width: 980px){
-      .cards{ grid-template-columns:1fr; }
-      .offering p{ font-size:19px; }
-      .offering .small{ font-size:16px; }
-    }
-
-    /* Gallery */
-    .gallery{
-      display:grid;
-      grid-template-columns: repeat(12, 1fr);
-      gap:12px;
-      margin-top:14px;
-    }
-    figure{ margin:0; }
-
-    .shot{
-      grid-column: span 6;
-      border-radius:18px;
-      overflow:hidden;
-      border:1px solid rgba(255,255,255,.14);
-      background: rgba(0,0,0,.18);
-      cursor:pointer;
-      position:relative;
-      transform: translateZ(0);
-    }
-    .shot.wide{ grid-column: span 12; }
-
-    /* Subtle hover zoom */
-    .shot img{
-      width:100%;
-      height:auto;
-      display:block;
-      object-fit:cover;
-      max-height: 520px;
-
-      /* smoother */
-      transform: scale(1.001);
-      transition: transform 240ms ease, filter 240ms ease;
-      will-change: transform;
-    }
-    .shot:hover img{
-      transform: scale(1.035);
-      filter: saturate(1.04) contrast(1.02);
-    }
-    .shot:active img{ transform: scale(1.02); }
-
-    .cap{
-      padding:12px;
-      font-size:13px;
-      color: rgba(255,255,255,.82);
-      border-top:1px solid rgba(255,255,255,.10);
-      background: rgba(0,0,0,.18);
-      line-height: 1.5;
-    }
-    .cap b{ color: rgba(255,255,255,.96); }
-    .cap em{ font-style: normal; color: rgba(255,255,255,.74); }
-
-    @media (max-width: 980px){
-      .shot{ grid-column: span 12; }
-    }
-
-    /* Image Lightbox (gallery click) */
-    .lightbox{
-      position:fixed;
-      inset:0;
-      display:none;
-      align-items:center;
-      justify-content:center;
-      z-index:80;
-      padding:18px;
-    }
-    .lightbox.show{ display:flex; }
-
-    .lightboxBackdrop{
-      position:absolute;
-      inset:0;
-      background: rgba(0,0,0,.62);
-      backdrop-filter: blur(16px) saturate(120%);
-      -webkit-backdrop-filter: blur(16px) saturate(120%);
-      opacity:0;
-      transition: opacity 220ms ease;
-    }
-    .lightbox.show .lightboxBackdrop{ opacity:1; }
-
-    .lightboxCard{
-      position:relative;
-      z-index:2;
-      width:min(1200px, 96vw);
-      max-height:86vh;
-      border-radius:28px;
-      overflow:hidden;
-      border:1px solid rgba(255,255,255,.14);
-      background: rgba(12,12,12,.92);
-      box-shadow: var(--shadow);
-
-      transform: translateY(10px) scale(.99);
-      opacity:0;
-      transition: transform 240ms ease, opacity 240ms ease;
-    }
-    .lightbox.show .lightboxCard{
-      transform: translateY(0) scale(1);
-      opacity:1;
-    }
-
-    .lightboxImg{
-      width:100%;
-      height:auto;
-      max-height:72vh;
-      display:block;
-      object-fit:contain;
-      background:#0b0b0b;
-    }
-    .lightboxCap{
-      padding:14px 16px;
-      border-top:1px solid rgba(255,255,255,.10);
-      color: rgba(255,255,255,.86);
-      line-height: 1.55;
-      background: rgba(0,0,0,.20);
-      font-size:14px;
-    }
-    .lightboxCap b{ color: rgba(255,255,255,.96); }
-    .lightboxCap em{ font-style: normal; color: rgba(255,255,255,.74); }
-
-    .lightboxClose{
-      position:absolute;
-      top:12px;
-      right:12px;
-      z-index:3;
-      cursor:pointer;
-      border:1px solid rgba(255,255,255,.18);
-      background: rgba(255,255,255,.10);
-      color:#fff;
-      padding:10px 14px;
-      border-radius:14px;
-      font-size:13px;
-      transition: background 160ms ease, transform 160ms ease;
-    }
-    .lightboxClose:hover{ background: rgba(255,255,255,.16); transform: translateY(-1px); }
-    .lightboxClose:active{ transform: translateY(0); }
-
-    /* FAQ */
-    details{
-      border-radius: 18px;
-      border:1px solid rgba(255,255,255,.14);
-      background: rgba(0,0,0,.18);
-      padding: 12px 14px;
-      margin: 10px 0;
-    }
-    summary{ cursor:pointer; font-weight:600; color: rgba(255,255,255,.92); }
-
-    /* Reserve form */
-    .formGrid{
-      display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap:10px;
-    }
-    label{
-      display:block;
-      font-size:12px;
-      color: rgba(255,255,255,.72);
-      margin:10px 0 6px;
-    }
-    input, textarea, select{
-      width:100%;
-      border-radius:14px;
-      border:1px solid rgba(255,255,255,.16);
-      background: rgba(0,0,0,.22);
-      color:#fff;
-      padding:12px;
-      outline:none;
-      font: inherit;
-    }
-    textarea{ min-height:120px; resize:vertical; }
-    .actions{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      align-items:center;
-      margin-top:12px;
-    }
-    .btn{
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      padding:12px 16px;
-      border-radius:16px;
-      border:1px solid rgba(255,255,255,.18);
-      background: rgba(255,255,255,.10);
-      color:#fff;
-      text-decoration:none;
-      font-size:14px;
-      cursor:pointer;
-      transition: transform 160ms ease, background 160ms ease;
-    }
-    .btn:hover{ transform: translateY(-1px); background: rgba(255,255,255,.14); }
-    .btn:active{ transform: translateY(0); }
-    .btn.primary{
-      background: rgba(234,226,209,.92);
-      color:#141613;
-      border-color: rgba(255,255,255,.12);
-    }
-    .btn.primary:hover{ background: rgba(234,226,209,.98); }
-
-    @media (max-width: 980px){
-      .formGrid{ grid-template-columns:1fr; }
-    }
-
-    /* Reduced motion */
-    @media (prefers-reduced-motion: reduce){
-      .hero, .nav, .modalBackdrop, .modalCard, .nav a, .btn, .close,
-      .lightboxBackdrop, .lightboxCard, .shot img{
-        transition:none !important;
-        animation:none !important;
-      }
-    }
-  </style>
+/* Mobile nav spacing */
+@media(max-width:480px){
+  .nav a {
+    font-size: 14px;
+    padding: 12px 14px;
+  }
+}
+</style>
 </head>
 
 <body>
-  <!-- Hero background -->
-  <div class="hero" id="hero" aria-label="Homepage hero"></div>
 
-  <!-- Nav overlay -->
-  <div class="nav" id="nav" aria-label="Primary navigation">
-    <div class="navLeft">
-      <a href="#" onclick="openModal('offering'); return false;">The Offering</a>
-      <a href="#" onclick="openModal('gallery'); return false;">Gallery</a>
-    </div>
-    <div class="navRight">
-      <a href="#" onclick="openModal('reserve'); return false;">Reserve</a>
-      <a href="#" onclick="openModal('about'); return false;">About</a>
-    </div>
+<div class="hero"></div>
+
+<div class="nav">
+  <div class="navLeft">
+    <a href="#" onclick="openModal('offering');return false;">The Offering</a>
+    <a href="#" onclick="openModal('gallery');return false;">Gallery</a>
   </div>
-
-  <!-- Modal -->
-  <div class="modal" id="modal">
-    <div class="modalBackdrop" onclick="closeModal()"></div>
-    <div class="modalCard" role="dialog" aria-modal="true" aria-label="Modal content">
-      <div class="modalTop">
-        <h2 id="modalTitle">Title</h2>
-        <button class="close" onclick="closeModal()">Close</button>
-      </div>
-      <div id="modalBody"></div>
-    </div>
+  <div class="navRight">
+    <a href="#" onclick="openModal('reserve');return false;">Reserve</a>
+    <a href="#" onclick="openModal('about');return false;">About</a>
   </div>
+</div>
 
-  <!-- Lightbox -->
-  <div class="lightbox" id="lightbox" aria-label="Image lightbox">
-    <div class="lightboxBackdrop" onclick="closeLightbox()"></div>
-    <div class="lightboxCard" role="dialog" aria-modal="true" aria-label="Expanded image">
-      <button class="lightboxClose" onclick="closeLightbox()">Close</button>
-      <img class="lightboxImg" id="lightboxImg" alt="" />
-      <div class="lightboxCap" id="lightboxCap"></div>
-    </div>
+<div class="modal" id="modal">
+  <div class="modalBackdrop" onclick="closeModal()"></div>
+  <div class="modalCard">
+    <button class="close" onclick="closeModal()">Close</button>
+    <h2 id="modalTitle"></h2>
+    <div id="modalBody"></div>
   </div>
+</div>
 
-  <!-- Templates -->
-  <template id="tpl-offering">
-    <div class="offering">
-      <div class="sectionBox">
-        <p style="margin-bottom:0;">
-          <b>Legacy On Location stages a one-of-a-kind Defender 110 Heritage Edition as a cinematic backdrop for moments that matter.</b>
-        </p>
-        <p class="small" style="margin-top:12px;">
-          Designed for weddings, family gatherings, photo shoots, content creators, and film/television productions.
-          This is curated staging — not casual rental.
-        </p>
+<script>
+const modal = document.getElementById("modal");
+const titleEl = document.getElementById("modalTitle");
+const bodyEl = document.getElementById("modalBody");
 
-        <div class="cards" aria-label="Service pillars">
-          <div class="card">
-            <strong>Static Staging</strong>
-            <span>We deliver and position the Defender as a premium visual anchor for your shoot or event.</span>
-          </div>
-          <div class="card">
-            <strong>Chauffeur Option</strong>
-            <span>We handle any movement/placement when needed for timing, safety, and liability control.</span>
-          </div>
-          <div class="card">
-            <strong>Production Ready</strong>
-            <span>COI required. Clear usage terms. Coordination with producers and creative teams.</span>
-          </div>
-        </div>
+const sections = {
+offering: {
+title: "The Offering",
+content: `
+<div class="offering">
+<div class="sectionBox">
+<p><b>Legacy On Location stages a one-of-a-kind Defender 110 Heritage Edition as a cinematic backdrop for moments that matter.</b></p>
+</div>
+<div class="sectionBox">
+<b>Areas Served</b>
+<div class="pills">
+<span class="pill">SF</span>
+<span class="pill">Marin</span>
+<span class="pill">Napa</span>
+<span class="pill">Sonoma</span>
+<span class="pill">East Bay</span>
+<span class="pill">Peninsula</span>
+</div>
+</div>
+</div>`
+},
+gallery: {
+title: "Gallery",
+content: `<p>Gallery content placeholder.</p>`
+},
+reserve: {
+title: "Reserve",
+content: `<p>Email <b>legacyonlocation@gmail.com</b> with date, location, and details for availability and quote.</p>`
+},
+about: {
+title: "About",
+content: `<p>Premium curated staging. Not casual rental. COI required for production use.</p>`
+}
+};
 
-        <p class="small" style="margin-top:14px;">
-          Rates are tailored by duration, location, and usage (personal vs. commercial). Reserve to receive availability + quote.
-        </p>
-      </div>
+function openModal(key){
+titleEl.textContent = sections[key].title;
+bodyEl.innerHTML = sections[key].content;
+modal.classList.add("show");
+}
 
-      <div class="sectionBox" aria-label="Areas Served">
-        <p style="margin:0 0 10px;"><b>Areas Served</b></p>
-        <div class="pills">
-          <span class="pill">SF</span>
-          <span class="pill">Marin</span>
-          <span class="pill">Napa</span>
-          <span class="pill">Sonoma</span>
-          <span class="pill">East Bay</span>
-          <span class="pill">Peninsula</span>
-        </div>
-      </div>
-    </div>
-  </template>
+function closeModal(){
+modal.classList.remove("show");
+}
+</script>
 
-  <template id="tpl-gallery">
-    <p style="margin-bottom:6px; color: rgba(255,255,255,.84);">
-      Selected moments on location. Tap any image to expand.
-    </p>
-
-    <div class="gallery" id="galleryGrid">
-      <!-- Note: Click handlers are attached via JS to keep HTML clean -->
-      <figure class="shot wide" data-src="JamesBond-Skyfall-Extra.jpeg"
-              data-title="On set as extra prop in James Bond Skyfall."
-              data-loc="The Scottish Highlands (2018).">
-        <img src="JamesBond-Skyfall-Extra.jpeg"
-             alt="On set as extra prop in James Bond Skyfall"
-             loading="lazy" decoding="async" />
-        <figcaption class="cap">
-          <b>On set as extra prop in James Bond Skyfall.</b><br>
-          <em>Location:</em> The Scottish Highlands (2018).
-        </figcaption>
-      </figure>
-
-      <figure class="shot" data-src="D110-JamesBaroud-Session.jpeg"
-              data-title="On location brand photo shoot for James Baroud rooftop tents."
-              data-loc="Bearsden, Scotland.">
-        <img src="D110-JamesBaroud-Session.jpeg"
-             alt="Brand photo shoot for James Baroud rooftop tents"
-             loading="lazy" decoding="async" />
-        <figcaption class="cap">
-          <b>On location brand photo shoot for James Baroud rooftop tents.</b><br>
-          <em>Location:</em> Bearsden, Scotland.
-        </figcaption>
-      </figure>
-
-      <figure class="shot" data-src="D110-Explore-Scotland-Shoot.jpeg"
-              data-title="Corporate retreat on location."
-              data-loc="Loch Lomond, Scotland.">
-        <img src="D110-Explore-Scotland-Shoot.jpeg"
-             alt="Corporate retreat on location"
-             loading="lazy" decoding="async" />
-        <figcaption class="cap">
-          <b>Corporate retreat on location.</b><br>
-          <em>Location:</em> Loch Lomond, Scotland.
-        </figcaption>
-      </figure>
-
-      <figure class="shot" data-src="D110-Family-Kilts-LochLomond.jpeg"
-              data-title="Family Christmas Kilts."
-              data-loc="Loch Lomond, Scotland.">
-        <img src="D110-Family-Kilts-LochLomond.jpeg"
-             alt="Family Christmas photo in kilts"
-             loading="lazy" decoding="async" />
-        <figcaption class="cap">
-          <b>Family Christmas Kilts.</b><br>
-          <em>Location:</em> Loch Lomond, Scotland.
-        </figcaption>
-      </figure>
-
-      <figure class="shot" data-src="Corporate-Tree-Cutting-Day-Highlands.jpeg"
-              data-title="Christmas tree cutting day."
-              data-loc="The Highlands, Scotland.">
-        <img src="Corporate-Tree-Cutting-Day-Highlands.jpeg"
-             alt="Christmas tree cutting day in the Highlands"
-             loading="lazy" decoding="async" />
-        <figcaption class="cap">
-          <b>Christmas tree cutting day.</b><br>
-          <em>Location:</em> The Highlands, Scotland.
-        </figcaption>
-      </figure>
-
-      <!-- This filename includes a space at the beginning: "Estate Sale-Bearsden-Glasgow.jpeg"
-           In URLs, spaces must be encoded as %20. -->
-      <figure class="shot wide" data-src="Estate%20Sale-Bearsden-Glasgow.jpeg"
-              data-title="Large estate sale staging."
-              data-loc="Bearsden, Glasgow.">
-        <img src="Estate%20Sale-Bearsden-Glasgow.jpeg"
-             alt="Large estate sale staging in Bearsden"
-             loading="lazy" decoding="async" />
-        <figcaption class="cap">
-          <b>Large estate sale staging.</b><br>
-          <em>Location:</em> Bearsden, Glasgow.
-        </figcaption>
-      </figure>
-    </div>
-  </template>
-
-  <template id="tpl-about">
-    <p style="color: rgba(255,255,255,.82);">Top questions — answered briefly.</p>
-
-    <details open>
-      <summary>Do clients drive the Defender?</summary>
-      <p style="color: rgba(255,255,255,.78);">
-        Typically no. We prioritize staged sessions to protect rarity and control liability. Chauffeur-managed movement can be arranged.
-      </p>
-    </details>
-
-    <details>
-      <summary>Where do you serve?</summary>
-      <p style="color: rgba(255,255,255,.78);">
-        SF, Marin, Napa, Sonoma, East Bay, and the Peninsula. Delivery is quoted based on distance, access, and timing.
-      </p>
-    </details>
-
-    <details>
-      <summary>What do film/commercial productions require?</summary>
-      <p style="color: rgba(255,255,255,.78);">
-        A certificate of insurance (COI), shoot details (call sheet if applicable), and clear usage/placement requirements.
-      </p>
-    </details>
-
-    <details>
-      <summary>Are rates posted?</summary>
-      <p style="color: rgba(255,255,255,.78);">
-        No. Rates are tailored by duration, location, and usage (personal vs. commercial). Submit a request and we’ll reply with availability + quote.
-      </p>
-    </details>
-
-    <details>
-      <summary>How far in advance should we reserve?</summary>
-      <p style="color: rgba(255,255,255,.78);">
-        Weekends and golden hour commonly book 2–4 weeks out. Productions should reserve earlier whenever possible.
-      </p>
-    </details>
-  </template>
-
-  <template id="tpl-reserve">
-    <p style="color: rgba(255,255,255,.82);">
-      Complete the request form below. This opens your email app (no backend required).
-      We’ll respond with availability and a tailored quote.
-    </p>
-
-    <form onsubmit="return sendMail(event)">
-      <div class="formGrid">
-        <div>
-          <label for="name">Name</label>
-          <input id="name" required placeholder="Your name" autocomplete="name" />
-        </div>
-        <div>
-          <label for="email">Email</label>
-          <input id="email" type="email" required placeholder="you@email.com" autocomplete="email" />
-        </div>
-        <div>
-          <label for="phone">Phone (optional)</label>
-          <input id="phone" placeholder="(415) 555-0123" autocomplete="tel" />
-        </div>
-        <div>
-          <label for="type">Request type</label>
-          <select id="type">
-            <option>Wedding / Engagement</option>
-            <option>Family / Milestone</option>
-            <option>Brand / Creator</option>
-            <option>Production (Film/TV/Commercial)</option>
-          </select>
-        </div>
-        <div>
-          <label for="date">Preferred date(s)</label>
-          <input id="date" placeholder="e.g., March 10 or March 10–12" />
-        </div>
-        <div>
-          <label for="location">Location</label>
-          <input id="location" placeholder="e.g., SF / Marin / Napa / Sonoma / East Bay / Peninsula" />
-        </div>
-      </div>
-
-      <div>
-        <label for="details">Description / requirements</label>
-        <textarea id="details" placeholder="Time window, staging needs, people/crew size, COI (if production), intended usage, anything important."></textarea>
-      </div>
-
-      <div class="actions">
-        <button class="btn primary" type="submit">Send Request</button>
-        <a class="btn" href="mailto:legacyonlocation@gmail.com">Email Instead</a>
-      </div>
-
-      <p style="margin-top:10px; color:rgba(255,255,255,.70); font-size:12px; line-height:1.5">
-        Productions require COI. Sessions prioritize staging-first boundaries to protect rarity and ensure a premium experience.
-      </p>
-    </form>
-  </template>
-
-  <script>
-    const modal = document.getElementById("modal");
-    const titleEl = document.getElementById("modalTitle");
-    const bodyEl  = document.getElementById("modalBody");
-    const heroEl  = document.getElementById("hero");
-    const navEl   = document.getElementById("nav");
-
-    const lightbox = document.getElementById("lightbox");
-    const lightboxImg = document.getElementById("lightboxImg");
-    const lightboxCap = document.getElementById("lightboxCap");
-
-    const map = {
-      offering: { title: "The Offering", tpl: "tpl-offering" },
-      gallery:  { title: "Gallery",      tpl: "tpl-gallery"  },
-      reserve:  { title: "Reserve",      tpl: "tpl-reserve"  },
-      about:    { title: "About",        tpl: "tpl-about"    },
-    };
-
-    function currentHeroSrc(){
-      return window.matchMedia("(max-width: 768px)").matches
-        ? "./hero-winner-mobile-wide.png"
-        : "./hero-winner.png";
-    }
-
-    // lightweight image preload (no cache-busting to keep it fast on repeat visits)
-    function preload(src){
-      return new Promise((resolve) => {
-        const img = new Image();
-        img.onload = () => resolve(true);
-        img.onerror = () => resolve(false);
-        img.src = src;
-      });
-    }
-
-    (async () => {
-      const src = currentHeroSrc();
-      await preload(src);
-      requestAnimationFrame(() => {
-        heroEl.classList.add("is-loaded");
-        navEl.classList.add("is-loaded");
-      });
-    })();
-
-    // Blur hero slightly when a modal is open (legible, not black)
-    function setModalState(isOpen){
-      heroEl.style.filter = isOpen
-        ? "blur(10px) saturate(115%) brightness(1.06)"
-        : "";
-    }
-
-    // Swap/fade hero if resized across breakpoint
-    let lastSrc = currentHeroSrc();
-    let resizeTimer = null;
-    window.addEventListener("resize", () => {
-      clearTimeout(resizeTimer);
-      resizeTimer = setTimeout(async () => {
-        const next = currentHeroSrc();
-        if(next === lastSrc) return;
-        lastSrc = next;
-
-        heroEl.classList.remove("is-loaded");
-        await preload(next);
-        heroEl.style.backgroundImage = `url("${next}")`;
-        requestAnimationFrame(() => heroEl.classList.add("is-loaded"));
-      }, 150);
-    });
-
-    function openModal(key){
-      const item = map[key];
-      if(!item) return;
-
-      titleEl.textContent = item.title;
-      const tpl = document.getElementById(item.tpl);
-      bodyEl.innerHTML = "";
-      bodyEl.appendChild(tpl.content.cloneNode(true));
-
-      modal.classList.add("show");
-      setModalState(true);
-
-      // Hook gallery click-to-lightbox AFTER content mounts
-      if(key === "gallery") attachGalleryLightbox();
-
-      // prevent background scroll while modal is open
-      document.documentElement.style.overflow = "hidden";
-      document.body.style.overflow = "hidden";
-    }
-
-    function closeModal(){
-      modal.classList.remove("show");
-      bodyEl.innerHTML = "";
-      setModalState(false);
-
-      document.documentElement.style.overflow = "";
-      document.body.style.overflow = "";
-    }
-
-    function attachGalleryLightbox(){
-      const grid = document.getElementById("galleryGrid");
-      if(!grid) return;
-
-      // Delegate clicks to figures
-      grid.querySelectorAll(".shot").forEach((fig) => {
-        fig.addEventListener("click", () => {
-          const src = fig.getAttribute("data-src");
-          const title = fig.getAttribute("data-title") || "";
-          const loc = fig.getAttribute("data-loc") || "";
-
-          openLightbox(src, title, loc);
-        }, { passive: true });
-      });
-    }
-
-    function openLightbox(src, title, loc){
-      // preload the selected image for instant display
-      const img = new Image();
-      img.onload = () => {
-        lightboxImg.src = src;
-        lightboxImg.alt = title || "Expanded gallery image";
-        lightboxCap.innerHTML = `<b>${escapeHtml(title)}</b><br><em>Location:</em> ${escapeHtml(loc)}`;
-
-        lightbox.classList.add("show");
-      };
-      img.onerror = () => {
-        lightboxImg.src = src;
-        lightboxImg.alt = title || "Expanded gallery image";
-        lightboxCap.innerHTML = `<b>${escapeHtml(title)}</b><br><em>Location:</em> ${escapeHtml(loc)}`;
-
-        lightbox.classList.add("show");
-      };
-      img.src = src;
-    }
-
-    function closeLightbox(){
-      lightbox.classList.remove("show");
-      // keep src for quick reopen; no need to clear
-    }
-
-    function escapeHtml(str){
-      return (str || "").replace(/[&<>"']/g, (m) => ({
-        "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
-      }[m]));
-    }
-
-    window.addEventListener("keydown", (e) => {
-      if(e.key === "Escape"){
-        if(lightbox.classList.contains("show")) closeLightbox();
-        else closeModal();
-      }
-    });
-
-    function sendMail(e){
-      e.preventDefault();
-
-      const name = document.getElementById("name").value.trim();
-      const email = document.getElementById("email").value.trim();
-      const phone = document.getElementById("phone").value.trim();
-      const type = document.getElementById("type").value;
-      const date = document.getElementById("date").value.trim();
-      const location = document.getElementById("location").value.trim();
-      const details = document.getElementById("details").value.trim();
-
-      const subject = encodeURIComponent(`Legacy On Location — Reserve Request (${type})`);
-      const body = encodeURIComponent(
-`Name: ${name}
-Email: ${email}
-Phone: ${phone}
-Request Type: ${type}
-Preferred Date(s): ${date}
-Location: ${location}
-
-Description / Requirements:
-${details}
-
-— Sent from Legacy On Location website`
-      );
-
-      window.location.href = `mailto:legacyonlocation@gmail.com?subject=${subject}&body=${body}`;
-      return false;
-    }
-
-    // Expose for inline nav clicks
-    window.openModal = openModal;
-    window.closeModal = closeModal;
-    window.sendMail = sendMail;
-    window.closeLightbox = closeLightbox;
-  </script>
 </body>
 </html>
